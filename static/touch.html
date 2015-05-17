@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="/js/touch.js"></script>
+  <link rel="stylesheet" href="css/touch.css" type="text/css" media="screen" />
+</head>
+<body>
+    <div class="sbtop row scroll-y">
+        <div id="sidebar">
+        </div>
+     </div>
+    <div id="resdiv" class="resdiv row scroll-y">
+        <pre id="results">
+        </pre>
+     </div>
+    <div class="header row">
+      <form id="inptform" action="javascript:void(0);" autocorrect="off" autocapitalize="off" autocomplete="off">
+        <input id="cmdpre" type="text" name="pre" size="1" value="" style="width: 10px;"/>
+        <textarea id="cmdtxt" type="text" name="cmd" cols="40" rows="1"></textarea>
+        <input id="cmdpost" type="text" name="post" size="1" value="" />
+        <input id="cmdfocus" type="text" name="focus" size="5" value="" />
+        <input id="cmdpos" type="text" name="pos" size="5" value="" />
+        <input type="submit" name='submit' value='go' autocorrect="off" autocapitalize="off" autocomplete="off" />
+        <input type="reset" name='reset' value='clear' autocorrect="off" autocapitalize="off" autocomplete="off" />
+      <a href="graph" target="_blank"> graph</a>
+      <a href="est" target="_blank"> est</a>
+      <span id="indicator">OK</span>
+      </form>
+    </div> 
+</body>

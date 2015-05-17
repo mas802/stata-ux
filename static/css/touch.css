@@ -1,0 +1,118 @@
+/*
+   STATA smcl formating substitutes
+*/
+.st_txt {
+	color: Black;
+	font-weight: normal;
+}
+
+.st_inp {
+	color: DarkViolet;
+	font-weight: bold;
+}
+
+.st_res {
+	color: Blue;
+	font-weight: bold;
+}
+
+.st_err {
+	color: Red;
+	font-weight: bold;
+}
+
+.st_bf {
+	font-weight: bold;
+}
+
+.st_it {
+	font-style: italic;
+}
+
+input, textarea, form {
+	font-size: 16pt;
+    vertical-align: top;
+}
+
+body, html {
+	overflow: hidden;
+}
+
+.row, .col {
+	overflow: hidden;
+	position: absolute;
+}
+
+.row {
+	left: 0;
+	right: 0;
+}
+
+.col {
+	top: 0;
+	bottom: 0;
+}
+
+.scroll-x {
+	overflow-x: auto;
+}
+
+.scroll-y {
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.header.row {
+	bottom: 0;
+	padding: 10px;
+	height: 60px;
+	background-color: #ffeaea;
+	vertical-align: center;
+}
+
+
+.fullside.col {
+  right: 0px;
+  left: 320px;
+  padding: 10px;
+  background-color: #ffeaea;
+}
+
+
+.sbtop.col {
+  left: 0px;
+  padding: 10px;
+  width: 300px;
+  background-color: #eaffff;
+}
+
+.sbtop.row {
+	top: 00px;
+	left: 0px;
+	bottom: 80px;
+	padding: 10px;
+	width: 300px;
+	background-color: #eaffff;
+}
+
+.resdiv.row {
+	top: 0px;
+	bottom: 80px;
+	left: 320px;
+	right: 0px;
+	padding: 10px;
+	background-color: #eaffea;
+}
+
+.sidebaritem{
+	margin: 1px;
+	padding: 8px;
+	border: 1px solid #000000;
+}
+
+.full {
+	background-color: #ffffea;
+}
+.varitem {
+	background-color: #ffffff;
+}
