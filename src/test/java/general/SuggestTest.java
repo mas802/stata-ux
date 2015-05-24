@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.velocity.app.VelocityEngine;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -24,7 +26,6 @@ import istata.service.StataService;
 @RunWith(MockitoJUnitRunner.class)
 public class SuggestTest {
     
-
     @Mock
     private StataFactory stataFactory;
 
@@ -36,6 +37,10 @@ public class SuggestTest {
     
     @Mock
     private IStata stata;
+    
+    @Mock
+    private VelocityEngine velocityEngine;
+    
     
     @Test
     public void someTest() {
@@ -61,7 +66,7 @@ public class SuggestTest {
         Mockito.when( stataFactory.getInstance()).thenReturn( stata );
         Mockito.when( stata.getVars("", false)).thenReturn( vars );
         
-        List<ContentLine> list = service.cmdFiltered("sum", -1);
+        List<ContentLine> list = service.suggest("sum", -1, 0, -1);
         
         for ( ContentLine cl:list) {
             System.out.println(cl.getContent());
@@ -95,10 +100,62 @@ public class SuggestTest {
         Mockito.when( stataFactory.getInstance()).thenReturn( stata );
         Mockito.when( stata.getVars("", false)).thenReturn( vars );
         
-        List<ContentLine> list = service.cmdFiltered("sum m", -1);
+        List<ContentLine> list = service.suggest("sum m", -1, 0, -1);
         
         for ( ContentLine cl:list) {
-            System.out.println(cl.getContent());
+            System.out.println("x:"+cl.getContent());
+        }
+        
+        Assert.assertEquals(1, list.size());
+    }
+    
+    
+    
+    @Test
+    public void filesTest() {
+        // Mockito.stubVoid(stataFactory.addStataListener(service));
+        
+        List<ContentLine> cmds = new ArrayList<ContentLine>();
+        List<StataVar> vars = new ArrayList<StataVar>();
+        
+        Mockito.when( cmdRepository.findAll()).thenReturn( cmds );
+        Mockito.when( stataFactory.getInstance()).thenReturn( stata );
+        Mockito.when( stata.getVars("", false)).thenReturn( vars );
+        Mockito.when( stata.getWorkingdir()).thenReturn( new File("src/").getAbsolutePath() );
+        // Mockito.when( velocityEngine).thenReturn( new File("src/").getAbsolutePath() );
+        
+        System.out.println(new File(".").getAbsolutePath());
+        
+        List<ContentLine> list = service.suggest("cd \"test/jav", -1, 0, -1);
+        
+        for ( ContentLine cl:list) {
+            System.out.println("x:"+cl.getContent());
+        }
+        
+        Assert.assertEquals(1, list.size());
+    }
+    
+    
+    
+    @Test
+    public void filesTestAbs() {
+        // Mockito.stubVoid(stataFactory.addStataListener(service));
+        
+        List<ContentLine> cmds = new ArrayList<ContentLine>();
+        List<StataVar> vars = new ArrayList<StataVar>();
+        
+        Mockito.when( cmdRepository.findAll()).thenReturn( cmds );
+        Mockito.when( stataFactory.getInstance()).thenReturn( stata );
+        Mockito.when( stata.getVars("", false)).thenReturn( vars );
+        Mockito.when( stata.getWorkingdir()).thenReturn( new File("src/").getAbsolutePath() );
+        // Mockito.when( velocityEngine).thenReturn( new File("src/").getAbsolutePath() );
+        
+        System.out.println(new File(".").getAbsolutePath());
+        
+        List<ContentLine> list = service.suggest("cd \"/Users", -1, 0, -1);
+        
+        for ( ContentLine cl:list) {
+            System.out.println("x:"+cl.getContent());
         }
         
         Assert.assertEquals(1, list.size());

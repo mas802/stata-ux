@@ -1,0 +1,4 @@
+<div class='sidebaritem file' 
+         onclick='handle("sidebarclick", "$text", $pos, $from, $to );''>
+$filename
+</div>

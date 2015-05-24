@@ -4,7 +4,8 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="/js/touch.js"></script>
+  <!--  <script src="/js/touch.js"></script> -->
+  <script src="/js/touchedit.js"></script>
   <link rel="stylesheet" href="css/touch.css" type="text/css" media="screen" />
 </head>
 <body>
@@ -12,10 +13,37 @@
         <div id="sidebar">
         </div>
      </div>
-    <div class="fullside col">
-      <form id="inptform" action="javascript:void(0);" autocorrect="off" autocapitalize="off" autocomplete="off">
-        <textarea id="cmdtxt" type="text" name="cmd" size="40" ></textarea>
+      <form id="editform" action="javascript:void(0);" autocorrect="off" autocapitalize="off" autocomplete="off">
+        <div id="cmdeditor">
+        <input id="cmdtimestamp" type="hidden" name="timestamp" size="5" value="" style="width: 2px;" />
+        <input id="cmdpath" type="text" name="path" size="40" value="/Users/mas/Dropbox/projects/hrv and happiness/analysis/do/analyse_paper.do" />
+
+        <input id="cmdpre" type="text" name="pre" size="1" value="" class="grabtab" />
+        <textarea id="cmdcontent" type="text" name="content" autocorrect="off" autocapitalize="off" autocomplete="off"></textarea>
+        <input id="cmdpost" type="text" name="post" size="1" value="" class="grabtab" />
+        
+       </div> 
+       <div id="cmdbuttons">
+        <span id="indicator">OK</span>
+        <input type="button" name="options" value=',' onclick='surroundSel( "#cmdcontent", ",", "");' />
+        <input type="button" name="brackets" value='()' onclick='surroundSel( "#cmdcontent", "(", ")");' />
+        <input type="button" name="quotes" value='"' onclick='surroundSel( "#cmdcontent", "\"", "\"");' />
+        <input type="button" name="localquotes" value="`'" onclick="surroundSel( '#cmdcontent', '`', '\'');" />
+        
+        <input type="button" name="load" value="l" onclick="loadFile();"/>
+        <input type="button" name="save" value="s"  onclick="saveFile(false);"/>
+        <input type="button" name="saveAndRun" value="r"  onclick="saveFile(true);"/>
+        <input type="button" name="runSel" value="d"  onclick="run();"/>
+        </div>
       </form>
-      <span id="indicator">OK</span>
-    </div> 
+      
+      <form id="inptform" action="javascript:void(0);" autocorrect="off" autocapitalize="off" autocomplete="off">
+        <input id="cmdfocus" type="hidden" name="focus" size="1" value="" />
+        <input id="cmdpos" type="hidden" name="pos" size="1" value="" />
+        <input id="cmdstart" type="hidden" name="start" size="1" value="" />
+        <input id="cmdend" type="hidden" name="end" size="1" value="" />
+        <input id="cmdtxt" type="hidden" name="cmd" size="40" style="width:100%; height: 20px;"></textarea>
+      </form>
+
+
 </body>

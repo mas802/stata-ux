@@ -17,6 +17,8 @@ import java.util.List;
 // import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Stata implements IStata {
 
@@ -37,6 +39,8 @@ public class Stata implements IStata {
 
     private File estlogfile;
     private File estfile;
+    
+    private String workingdir = null;
 
     // set default constructor to enforce Factory construction
     Stata(String initpath) throws IOException {
@@ -157,7 +161,7 @@ public class Stata implements IStata {
                 e.printStackTrace();
             }
         } else {
-            throw new RuntimeException("service not alive");
+            throw new StataNotRunningException("service not alive");
         }
 
         // System.out.println("end " + (System.currentTimeMillis() - start));
@@ -191,7 +195,10 @@ public class Stata implements IStata {
     }
 
     
-    List<StataVar> vars = null;
+    private List<StataVar> vars = null;
+    
+    private static final Pattern pwdpattern = Pattern.compile("\n(.*?)(\\s*?)\\Z");;
+
     
     /*
      * (non-Javadoc)
@@ -235,6 +242,11 @@ public class Stata implements IStata {
                 String r = scan.next();
                 scan.close();
 
+                Matcher m = pwdpattern.matcher(r);
+                if ( m.find() ) {
+                    this.workingdir = m.group(1);
+                }
+                
                 // check if something has changed
                 if (force || !r.equals(lastvarlist)) {
                     vars = new ArrayList<StataVar>();
@@ -261,6 +273,7 @@ public class Stata implements IStata {
                     lastvarlist = r;
                 }
 
+
                 endmarker.delete();
 
             } catch (FileNotFoundException e) {
@@ -274,7 +287,7 @@ public class Stata implements IStata {
                 e.printStackTrace();
             }
         } else {
-            throw new RuntimeException("service not alive");
+            throw new StataNotRunningException("service not alive");
         }
         }
         return vars;
@@ -330,7 +343,7 @@ public class Stata implements IStata {
                 e.printStackTrace();
             }
         } else {
-            throw new RuntimeException("service not alive");
+            throw new StataNotRunningException("service not alive");
         }
         return (graphfile.exists()) ? graphfile : null;
     }
@@ -386,7 +399,7 @@ public class Stata implements IStata {
                 e.printStackTrace();
             }
         } else {
-            throw new RuntimeException("service not alive");
+            throw new StataNotRunningException("service not alive");
         }
         return (estfile.exists()) ? estfile : null;
     }
@@ -450,8 +463,16 @@ public class Stata implements IStata {
                 e.printStackTrace();
             }
         } else {
-            throw new RuntimeException("service not alive");
+            throw new StataNotRunningException("service not alive");
         }
+    }
+    
+    
+    public String getWorkingdir( ) {
+        if ( vars == null ) {
+            getVars("", true);
+        }
+        return workingdir;
     }
 
     private Set<IStataListener> listeners = new HashSet<IStataListener>();

@@ -29,13 +29,35 @@
 	font-style: italic;
 }
 
-input, textarea, form {
-	font-size: 16pt;
-    vertical-align: top;
+input, textarea, button {
+    /*
+    -webkit-appearance: none; /*Safari/Chrome*/
+    -moz-appearance: none; /*Firefox*/
+    -ms-appearance: none; /*IE*/
+    -o-appearance: none; /*Opera*/
+    appearance: none;
+    */
+    
+    -webkit-border-radius: 2px; 
+    border-radius: 2px; 
 }
 
+input, textarea, form {
+	font-size: 16pt;
+  vertical-align: top;
+}
+
+input[type="button"]  {
+    border: 1px solid #006;
+    backgroundx: #90c0f0;
+    width: 40px;
+    height: 40px;
+    margin: 9px;
+}
+      
 body, html {
 	overflow: hidden;
+	height: 100%;
 }
 
 .row, .col {
@@ -66,7 +88,6 @@ body, html {
 	bottom: 0;
 	padding: 10px;
 	height: 60px;
-	background-color: #ffeaea;
 	vertical-align: center;
 }
 
@@ -75,7 +96,7 @@ body, html {
   right: 0px;
   left: 320px;
   padding: 10px;
-  background-color: #ffeaea;
+  height: 100%;
 }
 
 
@@ -113,6 +134,60 @@ body, html {
 .full {
 	background-color: #ffffea;
 }
+
 .varitem {
 	background-color: #ffffff;
 }
+
+#cmdeditor {
+  overflow: hidden;
+  position: absolute;
+	top: 0px;
+  bottom: 0px;
+  left: 320px;
+  right: 60px;
+  padding: 0px;
+  margin: 0px;
+}
+
+#cmdbuttons {
+  overflow: hidden;
+  position: absolute;
+	top: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 60px;
+  
+  vertical-align: bottom;
+	padding: 0px;
+  margin: 0px;
+  text-align: right;
+  background-color: #eaeaea;
+}
+
+#cmdcontent {
+	height: 80vh;
+	width: 98%;
+  white-space: pre;
+  word-wrap: normal;
+  overflow: auto;
+  border:1px solid #999999;
+  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+  font-size: 12pt;
+}
+
+
+input.grabtab {
+	  position: absolute;
+	  background: transparent;
+    border: none;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    display: compact;
+}
+    
+
+    
+    

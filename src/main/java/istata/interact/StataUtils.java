@@ -48,12 +48,18 @@ public class StataUtils {
             new String[] { "\\{res(ult)?:(.*?)\\}", M3 + "$1" + M0 },
             new String[] { "\\{err(or)?:(.*?)\\}", M2 + "$1" + M0 },
 
+            new String[] { "\\{hilite:(.*?)\\}", M4 + "$1" + M0 },
+
             new String[] { "\\{com(mand)?\\}", "" + M0 + M1 },
 
             new String[] { "\\{bind:(.*?)\\}", "$1" },
 
             new String[] { "\\{search (.*?):(.*?)\\}", M1 + "$2" + M0 },
             new String[] { "\\{search (.*?)\\}", M1 + "$1" + M0 },
+
+            new String[] { "\\{cmd:(.*?)\\}", M4 + "$1" + M0 },
+
+            new String[] { "\\{help (.*?):(.*?)\\}", M4 + "$2" + M0 },
 
             // TODO, does this exist?
             new String[] { "\\{bt\\}", "" + M0 + M1 },
@@ -75,9 +81,8 @@ public class StataUtils {
             new String[] { "\\{p(.*?)\\}", "" },
 
             new String[] { "\\{\\.\\.\\.\\}\n", "" },
-    // new String[]
-    // {"(\\{com\\}\\. )?[\r|\n]+\\{txt\\}end of do-file[\r|\n]+\\{smcl\\}[\r|\n]+",
-    // ""},
+            
+            new String[] {"(\\{com\\}\\. )?[\r|\n]+\\{txt\\}end of do-file[\r|\n]+\\{smcl\\}[\r|\n]+", ""},
     };
 
     private static Map<Pattern, String> map = new HashMap<Pattern, String>();
@@ -91,12 +96,12 @@ public class StataUtils {
 
             // hline and space
             String s = "";
-            String sp = "";
+            // String sp = "";
             for (int i = 1; i < 80; i++) {
                 s = s + "-";
-                map.put(Pattern.compile("\\{hline " + i + "\\}"), s);
-                sp = sp + " ";
-                map.put(Pattern.compile("\\{space " + i + "\\}"), sp);
+                // map.put(Pattern.compile("\\{hline " + i + "\\}"), s);
+                // sp = sp + " ";
+                // map.put(Pattern.compile("\\{space " + i + "\\}"), sp);
                 // c = c.replaceAll("\\{col "+i+"\\}","");
             }
             map.put(Pattern.compile("\\{hline\\}"), s);
@@ -108,7 +113,12 @@ public class StataUtils {
 
     private static final Pattern pright = Pattern.compile("\\{right:(.*?)\\}");
     private static final Pattern pcol = Pattern.compile("\\{col ([0-9]*?)\\}");
-    private static final Pattern pralign = Pattern.compile("\\{ralign ([0-9]*?):(.*?)\\}");
+    private static final Pattern pralign = Pattern
+            .compile("\\{ralign ([0-9]*?):(.*?)\\}");
+    private static final Pattern phline = Pattern
+            .compile("\\{hline ([0-9]*?)\\}");
+    private static final Pattern pspace = Pattern
+            .compile("\\{space ([0-9]*?)\\}");
 
     // TODO ralign
     // private static final Pattern pralign =
@@ -146,12 +156,43 @@ public class StataUtils {
                 // do nothing, i.e. do not process command lines
             } else {
 
-                // fix columns
-                Matcher m = pcol.matcher(c);
+                // fix hline
+                Matcher mhline = phline.matcher(c);
 
-                while (m.find()) {
-                    String match = m.group(0);
-                    int n = Integer.parseInt(m.group(1)) - 1;
+                while (mhline.find()) {
+                    String match = mhline.group(0);
+                    int n = Integer.parseInt(mhline.group(1));
+
+                    StringBuilder replace = new StringBuilder("");
+                    for (int x = 0; x < n; x++) {
+                        replace.append("-");
+                    }
+
+                    c = c.replace(match, replace);
+                }
+                
+
+                // fix space
+                Matcher mspace = pspace.matcher(c);
+
+                while (mspace.find()) {
+                    String match = mspace.group(0);
+                    int n = Integer.parseInt(mspace.group(1));
+
+                    StringBuilder replace = new StringBuilder("");
+                    for (int x = 0; x < n; x++) {
+                        replace.append(" ");
+                    }
+
+                    c = c.replace(match, replace);
+                }
+
+                // fix columns
+                Matcher mcol = pcol.matcher(c);
+
+                while (mcol.find()) {
+                    String match = mcol.group(0);
+                    int n = Integer.parseInt(mcol.group(1)) - 1;
 
                     // System.out.println(n);
 
@@ -171,6 +212,7 @@ public class StataUtils {
                     }
                     c = c.replace(match, replace);
                 }
+
 
                 // fix RIGHT
                 Matcher mright = pright.matcher(c);
@@ -303,6 +345,28 @@ public class StataUtils {
         return result;
     }
 
+    public static int countChar(String string, String c) {
+        int counter = 0;
+        for (int i = 0; i < string.length() - (c.length() - 1); i++) {
+            boolean check = true;
+            for (int j = 0; j < c.length(); j++) {
+                if (string.charAt(i + j) != c.charAt(j)) {
+                    check = false;
+                    break;
+                }
+            }
+            if (check) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public static int balanceChars(String string, String c, String d) {
+
+        return countChar(string, c) - countChar(string, d);
+    }
+
     public static Process runInteract(String stataexe) throws IOException,
             InterruptedException {
 
@@ -314,12 +378,11 @@ public class StataUtils {
 
         // FIXME horrible, horrible horrible implementation for Windose
         if (stataexe.toLowerCase().endsWith(".exe")) {
-            ps = rt.exec(
-                    new String[] { stataexe, "interact, reset" },
-                    null, tempDir.toFile());
+            ps = rt.exec(new String[] { stataexe, "interact, reset" }, null,
+                    tempDir.toFile());
         } else {
-            ps = rt.exec(new String[] { stataexe, "interact, reset" },
-                    null, tempDir.toFile());
+            ps = rt.exec(new String[] { stataexe, "interact, reset" }, null,
+                    tempDir.toFile());
         }
 
         /*
@@ -332,7 +395,7 @@ public class StataUtils {
                 tempDir.toFile().delete();
                 ps.destroy();
             }
-        });        
+        });
         return ps;
     }
 
@@ -372,5 +435,4 @@ public class StataUtils {
         }
         return stataPath;
     }
-
 }

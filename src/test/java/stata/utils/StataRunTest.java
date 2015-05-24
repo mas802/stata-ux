@@ -3,6 +3,7 @@ package stata.utils;
 import istata.interact.IStata;
 import istata.interact.IStataListener;
 import istata.interact.StataFactory;
+import istata.interact.StataNotRunningException;
 import istata.interact.model.StataResult;
 
 import org.junit.Test;
@@ -38,6 +39,24 @@ public class StataRunTest {
         try {
             stata.run("sysuse auto");
         } catch (RuntimeException e) {
+            // make sure test is succesful
+            System.err.println("Runtime Error " + e.getMessage());
+        }
+        
+    }
+    
+    @Test
+    public void testWorkingdir() {
+        
+        // final long start = System.currentTimeMillis();
+        
+        IStata stata = new StataFactory().getInstance();
+        
+        try {
+            stata.getVars("", true);
+            String wd = stata.getWorkingdir();
+            System.out.println( wd );
+        } catch (StataNotRunningException e) {
             // make sure test is succesful
             System.err.println("Runtime Error " + e.getMessage());
         }

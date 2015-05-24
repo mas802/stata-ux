@@ -1,0 +1,5 @@
+<div class='sidebaritem full' 
+         onclick='handle("sidebarclick", "$cmd.encContent()", -1, $from, $to );'
+         ondblclick='handle("sidebardblclick", "$cmd.encContent()", -1);'>
+$cmd.getContent()
+</div>

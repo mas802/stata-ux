@@ -42,4 +42,6 @@ public interface IStata {
 	public void addStataListener( IStataListener listener );
 	public void removeStataListener( IStataListener listener );
 
+    public abstract String getWorkingdir();
+
 }
