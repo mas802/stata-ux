@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 public class Stata implements IStata {
 
-    final static int bufferSize = 1024*1024;
-    
+    final static int bufferSize = 1024 * 1024;
+
     boolean init = false;
 
     private File path;
@@ -39,7 +39,7 @@ public class Stata implements IStata {
 
     private File estlogfile;
     private File estfile;
-    
+
     private String workingdir = null;
 
     // set default constructor to enforce Factory construction
@@ -56,7 +56,7 @@ public class Stata implements IStata {
         alivemarker = new File(path, "alive.marker");
         logfile = new File(path, "i.log");
         descfile = new File(path, "describe.log");
-        
+
         graphlogfile = new File(path, "graph.log");
         graphfile = new File(path, "graph.png");
 
@@ -95,13 +95,13 @@ public class Stata implements IStata {
     synchronized private void _run(String cmd) {
 
         vars = null;
-        
+
         // long start = System.currentTimeMillis();
         /*
-        System.out
-                .println("start _run " + (System.currentTimeMillis() - start));
-        */
-        
+         * System.out .println("start _run " + (System.currentTimeMillis() -
+         * start));
+         */
+
         // TODO, wrong place?
         if (cmd.endsWith(";")) {
             cmd = cmd.substring(0, cmd.length() - 1);
@@ -110,9 +110,9 @@ public class Stata implements IStata {
         cmd = cmd.trim();
         cmd = cmd + "\n";
 
-//        System.out.print("STATA ###" + cmd + "### in: ");
-//        System.out.println(dofile.getAbsolutePath() + " "
-//                + (System.currentTimeMillis() - start));
+        // System.out.print("STATA ###" + cmd + "### in: ");
+        // System.out.println(dofile.getAbsolutePath() + " "
+        // + (System.currentTimeMillis() - start));
 
         if (alivemarker.exists()) {
             try {
@@ -126,7 +126,7 @@ public class Stata implements IStata {
                 // write command to default do file
                 FileWriter fw = new FileWriter(dofile);
                 fw.append(cmd);
-//                fw.append("// END\n");
+                // fw.append("// END\n");
                 fw.close();
 
                 Thread.sleep(10);
@@ -194,101 +194,100 @@ public class Stata implements IStata {
 
     }
 
-    
     private List<StataVar> vars = null;
-    
-    private static final Pattern pwdpattern = Pattern.compile("\n(.*?)(\\s*?)\\Z");;
 
-    
+    private static final Pattern pwdpattern = Pattern
+            .compile("\n(.*?)(\\s*?)\\Z");;
+
     /*
      * (non-Javadoc)
      * 
      * @see mas.research.stata.IStata#getVars(java.lang.String)
      */
     public List<StataVar> getVars(String string, boolean force) {
-        
-        if ( string != null && string.length()>0 ) {
-            throw new IllegalArgumentException( "filter not implemented yet" );
+
+        if (string != null && string.length() > 0) {
+            throw new IllegalArgumentException("filter not implemented yet");
         }
-        
-        if ( vars == null || force ) {
 
-        if (alivemarker.exists()) {
-            try {
-                while (domarker.exists() || endmarker.exists()) {
-                    Thread.sleep(100);
-                }
+        if (vars == null || force) {
 
-                // write command to pipe file
-                FileWriter fwm = new FileWriter(domarker);
-                fwm.append("describe");
-                fwm.close();
-
-                Thread.sleep(10);
-
-                // wait until the dofile is cleared by stata
-                // and logfile is written
-                while (domarker.exists() || !endmarker.exists()) {
-                    Thread.sleep(100);
-                }
-
-                while (!descfile.exists()) {
-                    Thread.sleep(10);
-                }
-
-                Scanner scan;
-                scan = new Scanner(descfile);
-                scan.useDelimiter("\\Z");
-                String r = scan.next();
-                scan.close();
-
-                Matcher m = pwdpattern.matcher(r);
-                if ( m.find() ) {
-                    this.workingdir = m.group(1);
-                }
-                
-                // check if something has changed
-                if (force || !r.equals(lastvarlist)) {
-                    vars = new ArrayList<StataVar>();
-
-                    r = r.replaceAll(
-                            ".*?[\r|\n]+Con.*?[\r|\n]+  obs.*?[\r|\n]+.*?[\r|\n]+.*?[\r|\n]+",
-                            "");
-                    r = r.replaceAll(".*?[\r|\n]+variable name.*?[\r|\n]+", "");
-                    r = r.replaceAll(".*?---[\r|\n]+", "");
-                    int i = r.indexOf("Sorted by:");
-                    r = r.substring(0, i);
-
-                    // r = r.replaceAll("\n(\\s*?)> ", "");
-                    // r = r.replaceAll("\n\\s(\\s*?)(\\S)", " $2");
-                    // r = r.replaceAll("(\n\\S*?)[\n]", "$1");
-
-                    String lines[] = r.split("[\r|\n]+");
-                    for (String l : lines) {
-                        if (l.length() > 8) {
-                            vars.add(new StataVar(l));
-                            // System.out.println( new StataVar(l) );
-                        }
+            if (alivemarker.exists()) {
+                try {
+                    while (domarker.exists() || endmarker.exists()) {
+                        Thread.sleep(100);
                     }
-                    lastvarlist = r;
+
+                    // write command to pipe file
+                    FileWriter fwm = new FileWriter(domarker);
+                    fwm.append("describe");
+                    fwm.close();
+
+                    Thread.sleep(10);
+
+                    // wait until the dofile is cleared by stata
+                    // and logfile is written
+                    while (domarker.exists() || !endmarker.exists()) {
+                        Thread.sleep(100);
+                    }
+
+                    while (!descfile.exists()) {
+                        Thread.sleep(10);
+                    }
+
+                    Scanner scan;
+                    scan = new Scanner(descfile);
+                    scan.useDelimiter("\\Z");
+                    String r = scan.next();
+                    scan.close();
+
+                    Matcher m = pwdpattern.matcher(r);
+                    if (m.find()) {
+                        this.workingdir = m.group(1);
+                    }
+
+                    // check if something has changed
+                    if (force || !r.equals(lastvarlist)) {
+                        vars = new ArrayList<StataVar>();
+
+                        r = r.replaceAll(
+                                ".*?[\r|\n]+Con.*?[\r|\n]+  obs.*?[\r|\n]+.*?[\r|\n]+.*?[\r|\n]+",
+                                "");
+                        r = r.replaceAll(".*?[\r|\n]+variable name.*?[\r|\n]+",
+                                "");
+                        r = r.replaceAll(".*?---[\r|\n]+", "");
+                        int i = r.indexOf("Sorted by:");
+                        r = r.substring(0, i);
+
+                        // r = r.replaceAll("\n(\\s*?)> ", "");
+                        // r = r.replaceAll("\n\\s(\\s*?)(\\S)", " $2");
+                        // r = r.replaceAll("(\n\\S*?)[\n]", "$1");
+
+                        String lines[] = r.split("[\r|\n]+");
+                        for (String l : lines) {
+                            if (l.length() > 8) {
+                                vars.add(new StataVar(l));
+                                // System.out.println( new StataVar(l) );
+                            }
+                        }
+                        lastvarlist = r;
+                    }
+
+                    endmarker.delete();
+
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-
-
-                endmarker.delete();
-
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            } else {
+                throw new StataNotRunningException("service not alive");
             }
-        } else {
-            throw new StataNotRunningException("service not alive");
-        }
         }
         return vars;
     }
@@ -347,7 +346,6 @@ public class Stata implements IStata {
         }
         return (graphfile.exists()) ? graphfile : null;
     }
-    
 
     /*
      * (non-Javadoc)
@@ -466,10 +464,9 @@ public class Stata implements IStata {
             throw new StataNotRunningException("service not alive");
         }
     }
-    
-    
-    public String getWorkingdir( ) {
-        if ( vars == null ) {
+
+    public String getWorkingdir() {
+        if (vars == null) {
             getVars("", true);
         }
         return workingdir;
@@ -500,13 +497,12 @@ public class Stata implements IStata {
             File _file = v.logfile();
             long _filePointer = 0;
             byte[] buffer = new byte[bufferSize];
-            
+
             try {
                 while (_running) {
 
                     // System.out.println("check file");
 
-                    
                     Thread.sleep(_updateInterval);
                     long len = _file.length();
                     if (len < _filePointer) {
@@ -521,7 +517,8 @@ public class Stata implements IStata {
 
                             int bytesRead = 0;
                             while ((bytesRead = raf.read(buffer)) > 0) {
-                                sb.append(new String(Arrays.copyOf(buffer, bytesRead)));
+                                sb.append(new String(Arrays.copyOf(buffer,
+                                        bytesRead)));
                             }
 
                             _filePointer = raf.getFilePointer();

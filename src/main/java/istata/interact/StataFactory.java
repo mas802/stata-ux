@@ -35,11 +35,11 @@ public class StataFactory {
         } else {
             instance = instances.get(key);
         }
-        
-        for ( IStataListener l: listeners) {
+
+        for (IStataListener l : listeners) {
             instance.addStataListener(l);
         }
-        
+
         return instance;
     }
 
@@ -49,7 +49,6 @@ public class StataFactory {
             s.destroy();
         }
     }
-    
 
     private Set<IStataListener> listeners = new HashSet<IStataListener>();
 

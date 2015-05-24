@@ -81,9 +81,10 @@ public class StataUtils {
             new String[] { "\\{p(.*?)\\}", "" },
 
             new String[] { "\\{\\.\\.\\.\\}\n", "" },
-            
-            new String[] {"(\\{com\\}\\. )?[\r|\n]+\\{txt\\}end of do-file[\r|\n]+\\{smcl\\}[\r|\n]+", ""},
-    };
+
+            new String[] {
+                    "(\\{com\\}\\. )?[\r|\n]+\\{txt\\}end of do-file[\r|\n]+\\{smcl\\}[\r|\n]+",
+                    "" }, };
 
     private static Map<Pattern, String> map = new HashMap<Pattern, String>();
 
@@ -170,7 +171,6 @@ public class StataUtils {
 
                     c = c.replace(match, replace);
                 }
-                
 
                 // fix space
                 Matcher mspace = pspace.matcher(c);
@@ -212,7 +212,6 @@ public class StataUtils {
                     }
                     c = c.replace(match, replace);
                 }
-
 
                 // fix RIGHT
                 Matcher mright = pright.matcher(c);

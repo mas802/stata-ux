@@ -10,54 +10,54 @@ public class StataResult {
     private String content;
     private String error = "";
     private String graph = null;
-    
-    public StataResult( String cmd, String content) {
+
+    public StataResult(String cmd, String content) {
         this.cmd = cmd;
         this.content = content;
-//      this.error = content.replaceAll(".*?(r\\(\\d*?\\);)*?.*?", "$1");
-        Pattern p = Pattern.compile(".*?[\r|\n]+(r[(]\\d+?[)];)*?($|[\r|\n]+).*?" );
+        // this.error = content.replaceAll(".*?(r\\(\\d*?\\);)*?.*?", "$1");
+        Pattern p = Pattern
+                .compile(".*?[\r|\n]+(r[(]\\d+?[)];)*?($|[\r|\n]+).*?");
         Matcher m = p.matcher(content);
         if (m.find()) {
             this.error = m.group(1);
         }
-        
+
         Pattern pg = Pattern.compile(".*?[\r|\n]+[(]file (.*?) saved[)].*?");
         Matcher mg = pg.matcher(content);
         if (mg.find()) {
-            this.graph = (this.graph==null)?mg.group(1):this.graph + ","+ mg.group(1);
+            this.graph = (this.graph == null) ? mg.group(1) : this.graph + ","
+                    + mg.group(1);
             File g = new File(this.graph);
             this.graph = g.getAbsolutePath();
         }
     }
-    
-    
+
     public String getCmd() {
         return cmd;
     }
+
     public void setCmd(String cmd) {
         this.cmd = cmd;
     }
+
     public String getContent() {
         return content;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
 
-
     public String getError() {
-        return (error==null)?"":error;
+        return (error == null) ? "" : error;
     }
-
 
     public void setGraph(String graph) {
         this.graph = graph;
     }
 
-
     public String getGraph() {
-        return (graph==null)?"":graph;
+        return (graph == null) ? "" : graph;
     }
- 
-    
+
 }

@@ -28,14 +28,13 @@ public class StataRestController {
     }
 
     @RequestMapping("/start")
-    public ContentLine start( ) {
+    public ContentLine start() {
         stataService.startStata();
         return new ContentLine(200, "OK");
     }
-    
+
     @RequestMapping("/run")
-    public ContentLine run(
-            @RequestParam(value = "cmd") String command) {
+    public ContentLine run(@RequestParam(value = "cmd") String command) {
         return stataService.run(command);
     }
 
@@ -53,35 +52,28 @@ public class StataRestController {
         return stataService.resultLines(from, to);
     }
 
-
     @RequestMapping("/loaddofile")
-    public StataDoFile loaddofile(
-            @RequestParam(value = "path") String path) {
+    public StataDoFile loaddofile(@RequestParam(value = "path") String path) {
         return stataService.loadDoFile(path);
     }
 
-    
-    @RequestMapping(value="/savedofile", method=RequestMethod.POST)
-    public ContentLine savedofile(
-            @ModelAttribute StataDoFile dofile) {
+    @RequestMapping(value = "/savedofile", method = RequestMethod.POST)
+    public ContentLine savedofile(@ModelAttribute StataDoFile dofile) {
         return stataService.saveDoFile(dofile);
     }
-    
-    
-    @RequestMapping(value="/saveandrundofile", method=RequestMethod.POST)
-    public ContentLine saveAndRunDoFile(
-            @ModelAttribute StataDoFile dofile) {
+
+    @RequestMapping(value = "/saveandrundofile", method = RequestMethod.POST)
+    public ContentLine saveAndRunDoFile(@ModelAttribute StataDoFile dofile) {
         return stataService.saveAndRunDoFile(dofile);
     }
 
-    
     @RequestMapping("/cmds")
     public List<StataResultLine> cmds(
             @RequestParam(value = "from", defaultValue = "-1") int from,
             @RequestParam(value = "to", defaultValue = "-1") int to) {
         return stataService.resultLines(from, to);
     }
-    
+
     @RequestMapping("/clear")
     public void clear() {
         stataService.clear("");
@@ -98,15 +90,14 @@ public class StataRestController {
             @RequestParam(value = "focus", defaultValue = "") String focus,
             @RequestParam(value = "pos", defaultValue = "-1") int pos) {
 
-        StringBuilder sb = new StringBuilder( cmdfull );
+        StringBuilder sb = new StringBuilder(cmdfull);
         sb.insert(pos, "|");
-        
+
         Map<String, Object> res = new HashMap<String, Object>();
         res.put("data", sb.toString());
         return res;
 
     }
-
 
     @RequestMapping(value = "/suggest")
     public List<ContentLine> suggest(
@@ -122,16 +113,15 @@ public class StataRestController {
             @RequestParam(value = "end", defaultValue = "-1") int end) {
 
         List<ContentLine> res = null;
-        
-        if ( focus.equals("") || focus.equals("cmd") ) {
-            res = stataService.suggest(cmd, pos, start, end );
+
+        if (focus.equals("") || focus.equals("cmd")) {
+            res = stataService.suggest(cmd, pos, start, end);
         } else {
             String[] s = cmdexpr.split(" ");
-            res = stataService.varFiltered(s[s.length-1] + "*");
+            res = stataService.varFiltered(s[s.length - 1] + "*");
         }
-        
+
         return res;
     }
-    
-    
+
 }

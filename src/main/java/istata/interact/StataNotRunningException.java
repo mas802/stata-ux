@@ -7,11 +7,11 @@ public class StataNotRunningException extends RuntimeException {
      */
     private static final long serialVersionUID = 1L;
 
-    public StataNotRunningException( ) { 
+    public StataNotRunningException() {
         super();
     }
 
-    public StataNotRunningException( String message ) {
-        super( message);
+    public StataNotRunningException(String message) {
+        super(message);
     }
 }

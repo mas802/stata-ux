@@ -4,7 +4,7 @@ import istata.interact.model.StataResult;
 
 public interface IStataListener {
 
-	public void handleUpdate(String update);
-	
-	public void handleResult(StataResult result);
+    public void handleUpdate(String update);
+
+    public void handleResult(StataResult result);
 }

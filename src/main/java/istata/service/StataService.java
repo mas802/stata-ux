@@ -36,7 +36,6 @@ import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang.CharUtils;
 import org.apache.velocity.app.VelocityEngine;
-import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.velocity.VelocityEngineUtils;
@@ -225,7 +224,7 @@ public class StataService implements IStataListener {
                     return !name.startsWith(".");
                 }
             };
-            
+
             if (!token.equals("") || absFile.isDirectory()) {
                 // absolute file
 
@@ -261,30 +260,29 @@ public class StataService implements IStataListener {
             // work out if rest needs to be trimmed
             String after = filter.substring(p);
 
-            int endquote = pos;
-            
+            int endquote = p;
+
             // check whether we are in an existing string
             int aftercount = StataUtils.countChar(after, "\"");
             if (aftercount % 2 != 0) {
                 int firstquote = after.indexOf('"');
                 endquote += firstquote + 1;
             }
-            
+
             int i = 0;
             for (File f : potentials) {
                 ContentLine srl = new ContentLine();
                 Map<String, Object> model = new HashMap<String, Object>();
-                
+
                 String filename = f.getAbsolutePath();
-                if ( filename.startsWith(workingdir)) {
-                    filename = filename.substring(workingdir.length()+1);
+                if (filename.startsWith(workingdir)) {
+                    filename = filename.substring(workingdir.length() + 1);
                 }
-                filename = filename + ((f.isDirectory())?"/":"");
-                
-                String repltext = filter.substring(0, beginquote+1) +
-                        filename + 
-                        "\"" + filter.substring(endquote);
-                
+                filename = filename + ((f.isDirectory()) ? "/" : "");
+
+                String repltext = filter.substring(0, beginquote + 1)
+                        + filename + "\"" + filter.substring(endquote);
+
                 try {
                     model.put("text", URLEncoder.encode(repltext, "utf-8"));
                 } catch (UnsupportedEncodingException e) {
