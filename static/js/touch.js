@@ -3,7 +3,7 @@ var bottomPos = -1;
 var smallDist = 10;
 var focus = "";
 var resup = false;
-var selectpos = 0;
+var selectpos = -1;
 
 $(document).ready(
   function() {
@@ -66,6 +66,7 @@ $(document).ready(
       var a = document.getElementById('cmdtxt');
       $('#cmdpos').val(getSelectionStart(a));
       delay(function() {
+        selectpos = -1;
         updateSide();
       }, 300);
       
@@ -76,6 +77,8 @@ $(document).ready(
      */
     $('#cmdtxt').on('blur', function() {
 
+      // selectpos = -1;
+
       var a = document.getElementById('cmdtxt');
       $('#cmdpos').val(getSelectionStart(a));
 
@@ -85,6 +88,8 @@ $(document).ready(
      * add the blur function
      */
     $('#cmdtxt').on('click keyup keydown mouseup', function() {
+
+      // selectpos = -1;
 
       var a = document.getElementById('cmdtxt');
       $('#cmdpos').val(getSelectionStart(a));
@@ -97,7 +102,8 @@ $(document).ready(
     $('#cmdpre').on('focus', function() {
 
       selectpos++;
-      $("#sidebar").children()[selectpos].click();
+      $("#sidebar").children().eq(selectpos).fadeOut().fadeIn('slow');
+
       $('#cmdtxt').focus();
 
     });
@@ -106,10 +112,14 @@ $(document).ready(
      * add the post focus function
      */
     $('#cmdpost').on('focus', function() {
+
+      selectpos = -1;
       
+      /*
       selectpos = 0;
       $("#sidebar").children()[selectpos].click();      
       $('#cmdtxt').focus();
+      */
       
     });
 
@@ -235,7 +245,7 @@ function updateSide() {
     data : $("#inptform").serialize()
   }).then(function(data) {
     if (data.length > 0) {
-      selectpos = 0;
+      selectpos = -1;
       $("#sidebar").html("");
       $.each(data, function(key, value) {
         $("#sidebar").append(value.content);
@@ -271,40 +281,4 @@ function handle(what, data, focuspos, from, to) {
     alert(urldecode(data));
   }
   
-}
-
-/*
- * utility function to delay updating by 300 ms
- */
-var delay = (function() {
-  
-  var timer = 0;
-  return function(callback, ms) {
-    clearTimeout(timer);
-    timer = setTimeout(callback, ms);
-  };
-  
-})();
-
-/*
- * utility function to get the current cursor position
- */
-function getSelectionStart(o) {
-  
-  if (o.createTextRange) {
-    var r = document.selection.createRange().duplicate()
-    r.moveEnd('character', o.value.length)
-    if (r.text == '') {
-      return o.value.length;
-    }
-    return o.value.lastIndexOf(r.text);
-  } else {
-    return o.selectionStart;
-  }
-    
-}
-
-// f**king utility method
-function urldecode(str) {
-  return decodeURIComponent((str + '').replace(/\+/g, '%20'));
 }

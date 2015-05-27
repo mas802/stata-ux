@@ -2,6 +2,7 @@ package istata.service;
 
 import istata.domain.CmdRepository;
 import istata.domain.ContentLine;
+import istata.domain.EstBean;
 import istata.domain.StataDoFile;
 import istata.domain.StataResultLine;
 import istata.domain.StataVarLine;
@@ -21,6 +22,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,9 +33,12 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.CharUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -598,5 +603,78 @@ public class StataService implements IStataListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    /**
+     * transform a list of estimation properties into a realised list
+     * 
+     * this resolves placeholders in the form of <i> or <i(\\d*?)> to their
+     * respective inherient properties.
+     * 
+     * @param ests
+     * @return
+     */
+    public List<EstBean> realiseEstDo(List<EstBean> ests) {
+
+        ArrayList<EstBean> realised = new ArrayList<EstBean>();
+
+        for (EstBean org : ests) {
+
+            EstBean real = new EstBean();
+
+            for (String s : new String[] { "prefix", "command", "depvar",
+                    "vars", "restrictions", "options" }) {
+                String orgstr;
+                try {
+                    orgstr = BeanUtils.getProperty(org, s);
+                    if (orgstr != null) {
+                        BeanUtils.setProperty(real, s,
+                                replaceEstRefs(orgstr, s, realised));
+                    }
+                } catch (IllegalAccessException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            realised.add(real);
+        }
+
+        return realised;
+    }
+
+    private static final Pattern refP = Pattern.compile("<i(\\d*?)>");
+
+    private String replaceEstRefs(String org, String prop,
+            ArrayList<EstBean> prev) throws IllegalAccessException,
+            InvocationTargetException, NoSuchMethodException {
+
+        Matcher m = refP.matcher(org);
+
+        ArrayList<String[]> replacements = new ArrayList<String[]>();
+
+        while (m.find()) {
+            int i = prev.size() - 1;
+
+            String s = m.group(1);
+            if (!s.equals("")) {
+                i = Integer.parseInt(s);
+            }
+
+            String repl = BeanUtils.getProperty(prev.get(i), prop);
+            replacements.add(new String[] { m.group(), repl });
+        }
+
+        String result = org;
+        for (String[] r : replacements) {
+            result = result.replaceAll(r[0], r[1]);
+        }
+
+        return result;
     }
 }
