@@ -1,0 +1,4 @@
+<div class='sidebaritem varitem' 
+         onclick='handle("sidebarclick", "$repl", $focuspos, $from, $to );'>
+$var
+</div>

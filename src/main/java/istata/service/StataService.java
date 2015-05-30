@@ -405,13 +405,18 @@ public class StataService implements IStataListener {
                 String cl = new StringBuilder(rest).insert(p, " ")
                         .insert(p, vname).toString();
                 try {
-                    srl.setContent("<div class='sidebaritem varitem' "
-                            + "onclick='handle(\"sidebarclick\", \" "
-                            + URLEncoder.encode(cl, "UTF-8") + "\" " + ", "
-                            + (p + vname.length() + 1) + ");' "
-                            + "ondblclick='handle(\"sidebardblclick\", \""
-                            + URLEncoder.encode(cl, "UTF-8") + "\"" + ", " + -1
-                            + ");'>" + vname + "</div>");
+                    String cc = URLEncoder.encode(cl, "UTF-8");
+                    Map<String, Object> model = new HashMap<String, Object>();
+                    model.put("var", vname);
+                    model.put("repl", cc);
+                    model.put("focuspos", p+1+vname.length());
+                    model.put("from", from);
+                    model.put("to", to);
+
+                    String text = VelocityEngineUtils.mergeTemplateIntoString(
+                            velocityEngine, "var.vm", "UTF-8", model);
+
+                    srl.setContent(text);
                     res.add(srl);
                 } catch (UnsupportedEncodingException e) {
                     // TODO Auto-generated catch block
