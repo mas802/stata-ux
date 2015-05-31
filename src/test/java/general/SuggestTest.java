@@ -68,7 +68,7 @@ public class SuggestTest {
             System.out.println(cl.getContent());
         }
 
-        Assert.assertEquals(2, list.size());
+        Assert.assertEquals(1, list.size());
     }
 
     @Test
@@ -148,6 +148,34 @@ public class SuggestTest {
         System.out.println(new File(".").getAbsolutePath());
 
         List<ContentLine> list = service.suggest("cd \"/Users", -1, 0, -1);
+
+        for (ContentLine cl : list) {
+            System.out.println("x:" + cl.getContent());
+        }
+
+        Assert.assertEquals(1, list.size());
+    }
+    
+
+    @Test
+    public void filesTestTilde() {
+        // Mockito.stubVoid(stataFactory.addStataListener(service));
+
+        List<ContentLine> cmds = new ArrayList<ContentLine>();
+        List<StataVar> vars = new ArrayList<StataVar>();
+
+        Mockito.when(cmdRepository.findAll()).thenReturn(cmds);
+        Mockito.when(stataFactory.getInstance()).thenReturn(stata);
+        Mockito.when(stata.getVars("", false)).thenReturn(vars);
+        Mockito.when(stata.getWorkingdir()).thenReturn(
+                new File("src/").getAbsolutePath());
+        // Mockito.when( velocityEngine).thenReturn( new
+        // File("src/").getAbsolutePath() );
+
+        System.out.println(new File(".").getAbsolutePath());
+
+        String s = "cd \"~/Dropbox/PROJECTS/hrv and happiness/an"; // "cd \"~/Desk"
+        List<ContentLine> list = service.suggest(s, -1, 0, -1);
 
         for (ContentLine cl : list) {
             System.out.println("x:" + cl.getContent());

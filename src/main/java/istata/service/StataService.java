@@ -202,8 +202,10 @@ public class StataService implements IStataListener {
             String workingdir = stataFactory.getInstance().getWorkingdir();
 
             int beginquote = before.lastIndexOf('"');
-            String token = before.substring(beginquote + 1);
+            String orgtoken = before.substring(beginquote + 1);
 
+            String token = (!orgtoken.startsWith("~"))?orgtoken:orgtoken.replaceFirst("^~", System.getProperty("user.home"));;
+            
             // potential matching files (might be large?)
             List<File> potentials = new ArrayList<File>();
 
@@ -247,21 +249,23 @@ public class StataService implements IStataListener {
                 }
             }
 
-            // absolute file
-            File relFile = new File(workingdir, token);
-            File parent = null;
-            if (relFile.isDirectory()) {
-                parent = relFile;
-                fnf = all;
-            } else {
-                parent = relFile.getParentFile();
+            if ( !orgtoken.startsWith("~") ) {
+                // relative file
+                File relFile = new File(workingdir, orgtoken);
+                File parent = null;
+                if (relFile.isDirectory()) {
+                    parent = relFile;
+                    fnf = all;
+                } else {
+                    parent = relFile.getParentFile();
+                }
+                if (parent != null) {
+                    File[] fs = parent.listFiles(fnf);
+                    if (fs != null)
+                        potentials.addAll(Arrays.asList(fs));
+                }
             }
-            if (parent != null) {
-                File[] fs = parent.listFiles(fnf);
-                if (fs != null)
-                    potentials.addAll(Arrays.asList(fs));
-            }
-
+            
             // work out if rest needs to be trimmed
             String after = filter.substring(p);
 
@@ -280,8 +284,11 @@ public class StataService implements IStataListener {
                 Map<String, Object> model = new HashMap<String, Object>();
 
                 String filename = f.getAbsolutePath();
-                if (filename.startsWith(workingdir)) {
+                if ( !orgtoken.startsWith("~") && filename.startsWith(workingdir)) {
                     filename = filename.substring(workingdir.length() + 1);
+                }
+                if ( orgtoken.startsWith("~") ) {
+                    filename = "~/" + filename.substring(System.getProperty("user.home").length()+1);
                 }
                 filename = filename + ((f.isDirectory()) ? "/" : "");
 
