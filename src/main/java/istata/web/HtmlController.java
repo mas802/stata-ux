@@ -56,6 +56,24 @@ public class HtmlController {
         InputStream in = new FileInputStream(f);
         IOUtils.copy(in, response.getOutputStream());
     }
+    
+
+    @RequestMapping(value={"/graph **", "/graph **/**"})
+    public void graphs(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("image/png");
+
+        String path = (String) request.getAttribute(
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        
+        path = path.substring(7);
+        
+        stataService.run("graph display " + path);
+        
+        File f = stataService.graph();
+
+        InputStream in = new FileInputStream(f);
+        IOUtils.copy(in, response.getOutputStream());
+    }
 
     @RequestMapping("/est")
     public void est(HttpServletResponse response) throws IOException {
@@ -68,14 +86,14 @@ public class HtmlController {
     }
 
     
-    @RequestMapping(value={"/edit\"**", "/edit\"**/**"})
+    @RequestMapping(value={"/edit \"**", "/edit \"**/**"})
     @ResponseBody
     public String edit(HttpServletRequest request, Map<String, Object> model) {
         
         String path = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         
-        path = path.substring(6, path.length()-1);
+        path = path.substring(7, path.length()-1);
         
         model.put("content", stataService.loadDoFile(path).getContent());
         model.put("title", path);
@@ -83,4 +101,17 @@ public class HtmlController {
         return VelocityEngineUtils.mergeTemplateIntoString(
                 velocityEngine, "edit.vm", "UTF-8", model);
     }
+
+
+    @RequestMapping(value={"/help **", "/help **/**"})
+    public String help(HttpServletRequest request, Map<String, Object> model) {
+        
+        String path = (String) request.getAttribute(
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        
+        path = path.substring(6);
+
+        return "redirect:http://www.stata.com/help.cgi?" + path;
+    }
+
 }
