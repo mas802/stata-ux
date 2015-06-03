@@ -25,10 +25,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {
-        String password = ""
-                + (Math.round(Math.random() * 899999999) + 100000000);
-        System.out.println("The password is: " + password);
-        auth.inMemoryAuthentication().withUser("user").password(password)
-                .roles("USER");
+        // turns out this happens automatically - go spring
+//        String password = ""
+//                + (Math.round(Math.random() * 899999999) + 100000000);
+//        System.out.println("The password is: " + password);
+//        auth.inMemoryAuthentication().withUser("user").password(password)
+//                .roles("USER");
     }
 }
