@@ -13,24 +13,31 @@
         /*
          * makes sure return key works
          */
-        $(document).keypress(function(e) {
+        $(document).keyup(function(e) {
           
+          console.log( "key pressed: " + e.which );
+
           if (e.which == 13) {
             $('#inptform').submit();
+            e.preventDefault();
+            
           } else if (e.which == 33) {
             // page up
             selectpos++;
             $("#sidebar").children().eq(selectpos).fadeOut().fadeIn('slow');
-
+            $("#sidebar").children()[selectpos].click();
+            e.preventDefault();
+            
           } else if (e.which == 32 && selectpos>-1) {
             $("#sidebar").children()[selectpos].click();
+            e.preventDefault();
           }
           
         });
       });
   </script>
   
-  <link rel="stylesheet" href="css/touch.css" type="text/css" media="screen" />
+  <link rel="stylesheet" href="/css/touch.css" type="text/css" media="screen" />
 </head>
 <body>
     <div class="sbtop row scroll-y">

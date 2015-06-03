@@ -204,8 +204,8 @@ public class StataService implements IStataListener {
             int beginquote = before.lastIndexOf('"');
             String orgtoken = before.substring(beginquote + 1);
 
-            String token = (!orgtoken.startsWith("~"))?orgtoken:orgtoken.replaceFirst("^~", System.getProperty("user.home"));;
-            
+            String token = expandPath( orgtoken );
+
             // potential matching files (might be large?)
             List<File> potentials = new ArrayList<File>();
 
@@ -249,23 +249,6 @@ public class StataService implements IStataListener {
                 }
             }
 
-            if ( !orgtoken.startsWith("~") ) {
-                // relative file
-                File relFile = new File(workingdir, orgtoken);
-                File parent = null;
-                if (relFile.isDirectory()) {
-                    parent = relFile;
-                    fnf = all;
-                } else {
-                    parent = relFile.getParentFile();
-                }
-                if (parent != null) {
-                    File[] fs = parent.listFiles(fnf);
-                    if (fs != null)
-                        potentials.addAll(Arrays.asList(fs));
-                }
-            }
-            
             // work out if rest needs to be trimmed
             String after = filter.substring(p);
 
@@ -283,14 +266,8 @@ public class StataService implements IStataListener {
                 ContentLine srl = new ContentLine();
                 Map<String, Object> model = new HashMap<String, Object>();
 
-                String filename = f.getAbsolutePath();
-                if ( !orgtoken.startsWith("~") && filename.startsWith(workingdir)) {
-                    filename = filename.substring(workingdir.length() + 1);
-                }
-                if ( orgtoken.startsWith("~") ) {
-                    filename = "~/" + filename.substring(System.getProperty("user.home").length()+1);
-                }
-                filename = filename + ((f.isDirectory()) ? "/" : "");
+                char s = (orgtoken.length()>0)?orgtoken.charAt(0):'x';
+                String filename = reducePath(s, f);
 
                 String repltext = filter.substring(0, beginquote + 1)
                         + filename + "\"" + filter.substring(endquote);
@@ -416,7 +393,7 @@ public class StataService implements IStataListener {
                     Map<String, Object> model = new HashMap<String, Object>();
                     model.put("var", vname);
                     model.put("repl", cc);
-                    model.put("focuspos", p+1+vname.length());
+                    model.put("focuspos", p + 1 + vname.length());
                     model.put("from", from);
                     model.put("to", to);
 
@@ -459,7 +436,9 @@ public class StataService implements IStataListener {
     public StataDoFile loadDoFile(String path) {
         StataDoFile dofile = new StataDoFile();
 
-        File file = new File(path);
+        String epath = expandPath(path);
+        
+        File file = new File(epath);
 
         dofile.setPath(path);
         dofile.setTimestamp(file.lastModified());
@@ -490,9 +469,11 @@ public class StataService implements IStataListener {
 
         // todo might go into the database as well for the history
 
+        String path = expandPath(dofile.getPath());
+        
         try {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(dofile.getPath()), "UTF-8"));
+                    new FileOutputStream(path), "utf-8"));
             out.write(dofile.getContent());
             out.close();
         } catch (IOException e) {
@@ -689,4 +670,53 @@ public class StataService implements IStataListener {
 
         return result;
     }
+
+    /**
+     * expand a path either for the current working dir or the home dir
+     * 
+     * @param orgpath
+     * @return
+     */
+    public String expandPath(String orgpath) {
+        char s = (orgpath.length()>0)?orgpath.charAt(0):'x';
+        String result = orgpath;
+        switch (s) {
+        case '~':
+            result = orgpath.replaceFirst("^~", System.getProperty("user.home"));
+            break;
+        case '/':
+            break;
+        default:
+            result = new File(stataFactory.getInstance().getWorkingdir(), orgpath).getAbsolutePath();
+            break;
+        }
+        return result;
+    }
+    
+    /**
+     * create a shorten path by either the user or working dir
+     * 
+     * @param org
+     * @param file
+     * @return
+     */
+    public String reducePath(char org, File file) {
+        
+        String result = file.getAbsolutePath();
+        switch (org) {
+        case '~':
+            result = "~/"
+                    + result.substring(System.getProperty("user.home").length()+1);
+            break;
+        case '/':
+            break;
+        default:
+            result = result.substring(stataFactory.getInstance().getWorkingdir().length()+1);
+            break;
+        }
+        result = result + ((file.isDirectory()) ? "/" : "");        
+
+        return result;
+    }
+
 }

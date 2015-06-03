@@ -130,6 +130,8 @@ $(document).ready(
       
       $('#indicator').html("busy")
       var frm = document.getElementById("inptform");
+      var quest = frm['cmd'].value;
+      if ( quest.substring(0,1) != "/" ) {
       $.ajax({
         url : "/run",
         data : $("#inptform").serialize(),
@@ -141,6 +143,12 @@ $(document).ready(
         }
       
       });
+      } else {
+        $('#cmdtxt').val("");
+        updateSide();
+        var win = window.open(quest, '_blank');
+        win.focus();
+      }
 
       return false;
     });
@@ -170,7 +178,7 @@ $(document).ready(
                 $("#resdiv").animate(
                     {
                       scrollTop : $("#resdiv")[0].scrollHeight
-                          - ($("#resdiv").height() + smallDist + 1)
+                          - ($("#resdiv").height() + smallDist * 2)
                     }, "fast");
               }
               resup = false;
@@ -190,7 +198,7 @@ $(document).ready(
             $("#resdiv").animate(
                 {
                   scrollTop : $("#resdiv")[0].scrollHeight
-                      - ($("#resdiv").height() + smallDist + 1)
+                      - ($("#resdiv").height() + smallDist * 2)
                 }, "fast");
           }
         });
@@ -205,13 +213,16 @@ $(document).ready(
  */
 function up(data) {
   
+  var before = $( "#resdiv" )[0].scrollHeight;
+  
   $.each(data.reverse(), function(key, value) {
     $("#results").prepend(value.content);
     topPos = value.line;
     bottomPos = Math.max(value.line, bottomPos);
   });
+  var diff = $( "#resdiv" )[0].scrollHeight - before;
   $("#resdiv").animate({
-    scrollTop : smallDist + 1
+    scrollTop : diff
   }, "fast");
   
 }

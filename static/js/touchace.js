@@ -185,7 +185,7 @@ function handle(what, data, focuspos, from, to) {
 
 /*
  * load file
- */
+ *
 function loadFile() {
 
   console.log("load file");
@@ -205,6 +205,7 @@ function loadFile() {
   });
 
 }
+*/
 
 /*
  * save file

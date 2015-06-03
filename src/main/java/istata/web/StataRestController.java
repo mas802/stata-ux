@@ -52,10 +52,10 @@ public class StataRestController {
         return stataService.resultLines(from, to);
     }
 
-    @RequestMapping("/loaddofile")
-    public StataDoFile loaddofile(@RequestParam(value = "path") String path) {
-        return stataService.loadDoFile(path);
-    }
+//    @RequestMapping("/loaddofile")
+//    public StataDoFile loaddofile(@RequestParam(value = "path") String path) {
+//        return stataService.loadDoFile(path);
+//    }
 
     @RequestMapping(value = "/savedofile", method = RequestMethod.POST)
     public ContentLine savedofile(@ModelAttribute StataDoFile dofile) {
