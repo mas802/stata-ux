@@ -1,11 +1,24 @@
+/*
+ * Copyright 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package istata.service;
 
 import istata.domain.CmdRepository;
 import istata.domain.ContentLine;
 import istata.domain.EstBean;
 import istata.domain.StataDoFile;
-import istata.domain.StataResultLine;
-import istata.domain.StataVarLine;
 import istata.interact.IStata;
 import istata.interact.IStataListener;
 import istata.interact.StataFactory;
@@ -112,7 +125,7 @@ public class StataService implements IStataListener {
      * get results from a certain range, returns an empty list if the range does
      * not contain lines (can be polled for updates)
      */
-    public List<StataResultLine> resultLines(int from, int to) {
+    public List<ContentLine> resultLines(int from, int to) {
         if (from < 0) {
             from = Math.max(0, results.size() - 80);
         }
@@ -121,56 +134,13 @@ public class StataService implements IStataListener {
             to = results.size();
         }
 
-        ArrayList<StataResultLine> res = new ArrayList<StataResultLine>();
+        ArrayList<ContentLine> res = new ArrayList<ContentLine>();
 
         for (int i = from; i < to; i++) {
-            StataResultLine srl = new StataResultLine();
+            ContentLine srl = new ContentLine();
             srl.setLine(i);
             srl.setContent(StataUtils.smcl2html(results.get(i).toString(),
                     false));
-            res.add(srl);
-        }
-
-        return res;
-    }
-
-    /*
-     * returns variables from a certain range
-     */
-    public List<StataVarLine> vars(int from, int to) {
-        IStata stata = stataFactory.getInstance();
-        List<StataVar> vars = stata.getVars("", false);
-
-        if (from < 0) {
-            from = 0;
-        }
-
-        if (to < 0) {
-            to = Math.min(80, vars.size());
-        }
-
-        ArrayList<StataVarLine> res = new ArrayList<StataVarLine>();
-
-        for (int i = from; i < to; i++) {
-            StataVarLine srl = new StataVarLine();
-            srl.setLine(i);
-            srl.setContent("<p>" + vars.get(i).getName() + "</p>");
-            res.add(srl);
-        }
-
-        return res;
-    }
-
-    public List<ContentLine> varFiltered(String filter) {
-        IStata stata = stataFactory.getInstance();
-        List<StataVar> list = stata.getVars(filter, false);
-
-        ArrayList<ContentLine> res = new ArrayList<ContentLine>();
-
-        for (int i = 0; i < list.size(); i++) {
-            StataVarLine srl = new StataVarLine();
-            srl.setLine(i);
-            srl.setContent("<p>" + list.get(i).getName() + "</p>");
             res.add(srl);
         }
 
@@ -199,12 +169,10 @@ public class StataService implements IStataListener {
          */
         int count = StataUtils.countChar(before, "\"");
         if (count % 2 != 0) {
-            String workingdir = stataFactory.getInstance().getWorkingdir();
-
             int beginquote = before.lastIndexOf('"');
             String orgtoken = before.substring(beginquote + 1);
 
-            String token = expandPath( orgtoken );
+            String token = expandPath(orgtoken);
 
             // potential matching files (might be large?)
             List<File> potentials = new ArrayList<File>();
@@ -266,7 +234,7 @@ public class StataService implements IStataListener {
                 ContentLine srl = new ContentLine();
                 Map<String, Object> model = new HashMap<String, Object>();
 
-                char s = (orgtoken.length()>0)?orgtoken.charAt(0):'x';
+                char s = (orgtoken.length() > 0) ? orgtoken.charAt(0) : 'x';
                 String filename = reducePath(s, f);
 
                 String repltext = filter.substring(0, beginquote + 1)
@@ -283,7 +251,7 @@ public class StataService implements IStataListener {
                 model.put("to", to);
 
                 String text = VelocityEngineUtils.mergeTemplateIntoString(
-                        velocityEngine, "file.vm", "UTF-8", model);
+                        velocityEngine, "item/file.vm", "UTF-8", model);
 
                 srl.setContent(text);
                 srl.setLine(i++);
@@ -295,6 +263,15 @@ public class StataService implements IStataListener {
         return result;
     }
 
+    /**
+     * produce a list with possible sidebar suggestions for the current context
+     * 
+     * @param filter
+     * @param pos
+     * @param from
+     * @param to
+     * @return
+     */
     public List<ContentLine> suggest(String filter, int pos, int from, int to) {
         LinkedHashSet<ContentLine> res = new LinkedHashSet<ContentLine>();
 
@@ -310,16 +287,11 @@ public class StataService implements IStataListener {
                     model.put("to", to);
 
                     String text = VelocityEngineUtils.mergeTemplateIntoString(
-                            velocityEngine, "cmd.vm", "UTF-8", model);
+                            velocityEngine, "item/cmd.vm", "UTF-8", model);
 
                     srl.setContent(text);
                     srl.setLine(i++);
                     rescmd.add(srl);
-
-                    /*
-                     * if ( i>5 ) { break; }
-                     */
-
                 }
             }
         }
@@ -369,7 +341,6 @@ public class StataService implements IStataListener {
 
             String t = token.toString();
 
-            // List<StataVar> list = stata.getVars(token.toString(), false);
             List<StataVar> list = new ArrayList<StataVar>();
             List<StataVar> listfull = stata.getVars("", false);
             if (t.length() > 0) {
@@ -383,7 +354,7 @@ public class StataService implements IStataListener {
             }
 
             for (int i = 0; i < list.size(); i++) {
-                StataVarLine srl = new StataVarLine();
+                ContentLine srl = new ContentLine();
                 srl.setLine(i + 100);
                 String vname = list.get(i).getName();
                 String cl = new StringBuilder(rest).insert(p, " ")
@@ -398,7 +369,7 @@ public class StataService implements IStataListener {
                     model.put("to", to);
 
                     String text = VelocityEngineUtils.mergeTemplateIntoString(
-                            velocityEngine, "var.vm", "UTF-8", model);
+                            velocityEngine, "item/var.vm", "UTF-8", model);
 
                     srl.setContent(text);
                     res.add(srl);
@@ -408,7 +379,7 @@ public class StataService implements IStataListener {
                 }
             }
         } catch (StataNotRunningException e) {
-            StataVarLine srl = new StataVarLine();
+            ContentLine srl = new ContentLine();
             srl.setLine(1);
             srl.setContent("<div class='sidebaritem error' >"
                     + "Stata not running, you can try to start "
@@ -437,7 +408,7 @@ public class StataService implements IStataListener {
         StataDoFile dofile = new StataDoFile();
 
         String epath = expandPath(path);
-        
+
         File file = new File(epath);
 
         dofile.setPath(path);
@@ -467,10 +438,10 @@ public class StataService implements IStataListener {
         // FIXME, check wether file has same lastmodified/version
         // File file = new File( dofile.getName() );
 
-        // todo might go into the database as well for the history
+        // TODO might go into the database as well for the history
 
         String path = expandPath(dofile.getPath());
-        
+
         try {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(path), "utf-8"));
@@ -544,7 +515,6 @@ public class StataService implements IStataListener {
      */
     @Override
     public void handleResult(StataResult result) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -678,21 +648,23 @@ public class StataService implements IStataListener {
      * @return
      */
     public String expandPath(String orgpath) {
-        char s = (orgpath.length()>0)?orgpath.charAt(0):'x';
+        char s = (orgpath.length() > 0) ? orgpath.charAt(0) : 'x';
         String result = orgpath;
         switch (s) {
         case '~':
-            result = orgpath.replaceFirst("^~", System.getProperty("user.home"));
+            result = orgpath
+                    .replaceFirst("^~", System.getProperty("user.home"));
             break;
         case '/':
             break;
         default:
-            result = new File(stataFactory.getInstance().getWorkingdir(), orgpath).getAbsolutePath();
+            result = new File(stataFactory.getInstance().getWorkingdir(),
+                    orgpath).getAbsolutePath();
             break;
         }
         return result;
     }
-    
+
     /**
      * create a shorten path by either the user or working dir
      * 
@@ -701,20 +673,21 @@ public class StataService implements IStataListener {
      * @return
      */
     public String reducePath(char org, File file) {
-        
+
         String result = file.getAbsolutePath();
         switch (org) {
         case '~':
             result = "~/"
-                    + result.substring(System.getProperty("user.home").length()+1);
+                    + result.substring(System.getProperty("user.home").length() + 1);
             break;
         case '/':
             break;
         default:
-            result = result.substring(stataFactory.getInstance().getWorkingdir().length()+1);
+            result = result.substring(stataFactory.getInstance()
+                    .getWorkingdir().length() + 1);
             break;
         }
-        result = result + ((file.isDirectory()) ? "/" : "");        
+        result = result + ((file.isDirectory()) ? "/" : "");
 
         return result;
     }

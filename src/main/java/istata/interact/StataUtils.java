@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package istata.interact;
 
 import java.io.File;
@@ -97,13 +112,8 @@ public class StataUtils {
 
             // hline and space
             String s = "";
-            // String sp = "";
             for (int i = 1; i < 80; i++) {
                 s = s + "-";
-                // map.put(Pattern.compile("\\{hline " + i + "\\}"), s);
-                // sp = sp + " ";
-                // map.put(Pattern.compile("\\{space " + i + "\\}"), sp);
-                // c = c.replaceAll("\\{col "+i+"\\}","");
             }
             map.put(Pattern.compile("\\{hline\\}"), s);
             map.put(Pattern.compile("\\{\\.-\\}"), s);
@@ -121,10 +131,6 @@ public class StataUtils {
     private static final Pattern pspace = Pattern
             .compile("\\{space ([0-9]*?)\\}");
 
-    // TODO ralign
-    // private static final Pattern pralign =
-    // Pattern.compile("\\{ralign:(.*?)\\}");
-
     /**
      * utility method to replace scml commands with their hidden counterparts
      * 
@@ -140,10 +146,7 @@ public class StataUtils {
         StringBuilder r = new StringBuilder();
 
         for (Map.Entry<Pattern, String> e : getPatternMap().entrySet()) {
-            // content = StringUtils.replace( content, s[0], s[1]);
             content = e.getKey().matcher(content).replaceAll(e.getValue());
-            // System.out.println( e.getKey().pattern() );
-            // System.out.println( content );
         }
 
         for (String c : content.split("\n")) {
@@ -193,8 +196,6 @@ public class StataUtils {
                 while (mcol.find()) {
                     String match = mcol.group(0);
                     int n = Integer.parseInt(mcol.group(1)) - 1;
-
-                    // System.out.println(n);
 
                     int x = c.indexOf(match);
                     int charCount = c
@@ -251,8 +252,6 @@ public class StataUtils {
 
                     String txt = mralign.group(2);
                     int n = txt.length();
-
-                    // System.out.println(n);
 
                     int x = c.indexOf(match);
                     int charCount = c

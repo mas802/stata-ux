@@ -13,10 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package istata.domain;
+package istata.general;
 
-import org.springframework.data.repository.CrudRepository;
+import istata.service.StataService;
 
-public interface CmdRepository extends CrudRepository<ContentLine, Integer> {
+import org.junit.Test;
 
+public class StataServiceTest {
+
+    @Test
+    public void handleUpdatesTest() {
+
+        StataService service = new StataService();
+
+        service.handleUpdate("{res}{sf}{ul off}{txt}\n" + "{com}.");
+        service.handleUpdate(" use \"dta/hrv_happy_analysis_20150514.dta\", clear\n");
+        service.handleUpdate("{txt}");
+
+        System.out.println(service.results(""));
+    }
 }

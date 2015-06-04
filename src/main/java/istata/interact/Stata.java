@@ -1,3 +1,18 @@
+/*
+ * Copyright 2015 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package istata.interact;
 
 import istata.interact.model.StataVar;
@@ -68,6 +83,7 @@ public class Stata implements IStata {
         logfile.createNewFile();
     }
 
+    @Override
     public File logfile() {
         return logfile;
     }
@@ -173,6 +189,7 @@ public class Stata implements IStata {
      * 
      * @see mas.research.stata.IStata#run(java.lang.String)
      */
+    @Override
     public void run(String... cmds) {
 
         if (!semidelm) {
@@ -204,6 +221,7 @@ public class Stata implements IStata {
      * 
      * @see mas.research.stata.IStata#getVars(java.lang.String)
      */
+    @Override
     public List<StataVar> getVars(String string, boolean force) {
 
         if (string != null && string.length() > 0) {
@@ -297,6 +315,7 @@ public class Stata implements IStata {
      * 
      * @see mas.research.stata.IStata#getGraph()
      */
+    @Override
     public File getGraph() {
 
         if (alivemarker.exists()) {
@@ -352,6 +371,7 @@ public class Stata implements IStata {
      * 
      * @see mas.research.stata.IStata#getGraph()
      */
+    @Override
     public File getEst() {
 
         if (alivemarker.exists()) {
@@ -407,6 +427,7 @@ public class Stata implements IStata {
      * 
      * @see mas.research.stata.IStata#isReady()
      */
+    @Override
     public boolean isReady() {
         return true;
     }
@@ -415,18 +436,22 @@ public class Stata implements IStata {
         return null;
     }
 
+    @Override
     public void destroy() {
         init = false;
     }
 
+    @Override
     public boolean isSemidelm() {
         return semidelm;
     }
 
+    @Override
     public void setSemidelm(boolean semidelm) {
         this.semidelm = semidelm;
     }
 
+    @Override
     public void clear() {
 
         if (alivemarker.exists()) {
@@ -465,6 +490,7 @@ public class Stata implements IStata {
         }
     }
 
+    @Override
     public String getWorkingdir() {
         if (vars == null) {
             getVars("", true);
@@ -474,10 +500,12 @@ public class Stata implements IStata {
 
     private Set<IStataListener> listeners = new HashSet<IStataListener>();
 
+    @Override
     public void addStataListener(IStataListener listener) {
         listeners.add(listener);
     }
 
+    @Override
     public void removeStataListener(IStataListener listener) {
         listeners.remove(listener);
     }
@@ -492,6 +520,7 @@ public class Stata implements IStata {
             this.v = v;
         }
 
+        @Override
         public void run() {
 
             File _file = v.logfile();
