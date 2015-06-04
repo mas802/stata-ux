@@ -251,7 +251,7 @@ public class StataService implements IStataListener {
                 model.put("to", to);
 
                 String text = VelocityEngineUtils.mergeTemplateIntoString(
-                        velocityEngine, "item/file.vm", "UTF-8", model);
+                        velocityEngine, "items/file.vm", "UTF-8", model);
 
                 srl.setContent(text);
                 srl.setLine(i++);
@@ -287,7 +287,7 @@ public class StataService implements IStataListener {
                     model.put("to", to);
 
                     String text = VelocityEngineUtils.mergeTemplateIntoString(
-                            velocityEngine, "item/cmd.vm", "UTF-8", model);
+                            velocityEngine, "items/cmd.vm", "UTF-8", model);
 
                     srl.setContent(text);
                     srl.setLine(i++);
@@ -369,7 +369,7 @@ public class StataService implements IStataListener {
                     model.put("to", to);
 
                     String text = VelocityEngineUtils.mergeTemplateIntoString(
-                            velocityEngine, "item/var.vm", "UTF-8", model);
+                            velocityEngine, "items/var.vm", "UTF-8", model);
 
                     srl.setContent(text);
                     res.add(srl);
