@@ -25,7 +25,17 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StataUtils {
+/**
+ * general utils to deal with Stata
+ * 
+ * in particular this class allows to convert smcl into various formats like txt
+ * and html.
+ * 
+ * Futhermore it allows tokenising of Stata specific Strings
+ * 
+ * @author Markus Schaffner
+ * 
+ */public class StataUtils {
 
     public static final char M0 = (char) 28; // text
     public static final char M1 = (char) 29; // input/com
@@ -96,10 +106,9 @@ public class StataUtils {
             new String[] { "\\{p(.*?)\\}", "" },
 
             new String[] { "\\{\\.\\.\\.\\}\n", "" },
-
-            new String[] {
-                    "(\\{com\\}\\. )?[\r|\n]+\\{txt\\}end of do-file[\r|\n]+\\{smcl\\}[\r|\n]+",
-                    "" }, };
+            
+            new String[] {"(\\{com\\}\\. )?[\r|\n]+\\{txt\\}end of do-file[\r|\n]+\\{smcl\\}[\r|\n]+", ""},
+    };
 
     private static Map<Pattern, String> map = new HashMap<Pattern, String>();
 
