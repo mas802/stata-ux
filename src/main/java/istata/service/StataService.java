@@ -52,6 +52,7 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -414,17 +415,12 @@ public class StataService implements IStataListener {
         dofile.setPath(path);
         dofile.setTimestamp(file.lastModified());
 
-        Scanner scan = null;
         try {
-            scan = new Scanner(file, "utf-8");
-            scan.useDelimiter("\\Z");
-            dofile.setContent(scan.next());
-        } catch (FileNotFoundException e) {
-            // FIXME I guess this should be handled more elegantely
-            throw new RuntimeException("issues reading file " + e.getMessage());
-        } finally {
-            if (scan != null)
-                scan.close();
+            dofile.setContent(FileUtils.readFileToString(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+            // FIXME this should somehow fail, maybe runtime exception instead?
+            dofile.setContent("Error retrieving file content: " + e.getMessage());
         }
 
         return dofile;
