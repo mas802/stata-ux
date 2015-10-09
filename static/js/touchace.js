@@ -144,7 +144,7 @@ function updateSide() {
   $.ajax({
     url : "/suggest",
     data : $("#inptform").serialize()
-  }).then(function(data) {
+  }).done(function(data) {
     if (data.length > 0) {
       selectpos = 0;
       $("#sidebar").html("");
@@ -152,6 +152,8 @@ function updateSide() {
         $("#sidebar").append(value.content);
       });
     }
+  }).fail(function(data) {
+    alert("error in request, maybe session has expired, use refresh to renew login " + data );
   });
 
 }
@@ -211,12 +213,14 @@ function loadFile() {
     data : {
       "path" : "" + $("#cmdpath").val() + ""
     }
-  }).then(function(data) {
+  }).done(function(data) {
     $("#cmdfile").val(data.name);
     editor.setValue(data.content);
     $("#cmdtimestamp").val(data.timestamp);
     $('#indicator').html("ok");
     editor.clearSelection();
+  }).fail(function(data) {
+    alert("error in request, maybe session has expired, use refresh to renew login " + data );
   });
 
 }
