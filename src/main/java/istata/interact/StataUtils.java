@@ -83,6 +83,8 @@ public class StataUtils {
             new String[] { "\\{search (.*?):(.*?)\\}", M1 + "$2" + M0 },
             new String[] { "\\{search (.*?)\\}", M1 + "$1" + M0 },
 
+            new String[] { "\\{browse (.*?):(.*?)\\}", M1 + "$2" + M0 },
+
             new String[] { "\\{cmd:(.*?)\\}", M4 + "$1" + M0 },
 
             new String[] { "\\{help (.*?):(.*?)\\}", M4 + "$2" + M0 },
