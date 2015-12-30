@@ -103,6 +103,17 @@ public class StataService implements IStataListener {
         return new ContentLine(1, "ran " + command);
     }
 
+
+    /*
+     * save command without running it
+     */
+    public ContentLine saveCmd(String command) {
+        ContentLine cmd = new ContentLine();
+        cmd.setContent(command.trim());
+        cmdRepository.save(cmd);
+
+        return new ContentLine(1, "ran " + command);
+    }
     /*
      * get the complete results as a html page
      * 
@@ -521,9 +532,21 @@ public class StataService implements IStataListener {
      */
     public File graph() {
         IStata stata = stataFactory.getInstance();
-        return stata.getGraph();
+        return stata.getGraph(null);
     }
 
+
+    /**
+     * method to get a graph file with a name
+     * 
+     * @return graph file
+     */
+    public File graph(String name) {
+        IStata stata = stataFactory.getInstance();
+        return stata.getGraph(name);
+    }
+    
+    
     /**
      * method to get a estimation results file
      * 

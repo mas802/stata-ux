@@ -81,7 +81,9 @@ $(document).ready(
       var a = document.getElementById('cmdtxt');
       $('#cmdpos').val(getSelectionStart(a));
       delay(function() {
-        selectpos = -1;
+
+        unselectListItem();
+        
         updateSide();
       }, 300);
       
@@ -92,8 +94,8 @@ $(document).ready(
      */
     $('#cmdtxt').on('blur', function() {
 
-      // selectpos = -1;
-
+      // unselectListItem();
+      
       var a = document.getElementById('cmdtxt');
       $('#cmdpos').val(getSelectionStart(a));
 
@@ -104,8 +106,8 @@ $(document).ready(
      */
     $('#cmdtxt').on('click keyup keydown mouseup', function() {
 
-      // selectpos = -1;
-
+      // unselectListItem();
+      
       var a = document.getElementById('cmdtxt');
       $('#cmdpos').val(getSelectionStart(a));
 
@@ -116,8 +118,7 @@ $(document).ready(
      */
     $('#cmdpre').on('focus', function() {
 
-      selectpos++;
-      $("#sidebar").children().eq(selectpos).fadeOut().fadeIn('slow');
+      selectListItem();
 
       $('#cmdtxt').focus();
 
@@ -128,13 +129,10 @@ $(document).ready(
      */
     $('#cmdpost').on('focus', function() {
 
-      selectpos = -1;
+      unselectListItem();
       
-      /*
-      selectpos = 0;
-      $("#sidebar").children()[selectpos].click();      
       $('#cmdtxt').focus();
-      */
+
       
     });
 
@@ -271,7 +269,9 @@ function updateSide() {
     data : $("#inptform").serialize()
   }).then(function(data) {
     if (data.length > 0) {
-      selectpos = -1;
+
+      unselectListItem();
+      
       $("#sidebar").html("");
       $.each(data, function(key, value) {
         $("#sidebar").append(value.content);

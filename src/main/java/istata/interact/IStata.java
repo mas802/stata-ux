@@ -37,6 +37,13 @@ public interface IStata {
      */
     public abstract File getGraph();
 
+
+    /*
+     * get named graph file, returns null if no graph can be produced
+     */
+    public abstract File getGraph(String name);
+
+    
     /*
      * get latest est file, returns null if no est can be produced
      */

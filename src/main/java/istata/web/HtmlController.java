@@ -64,6 +64,7 @@ public class HtmlController {
     public void graph(HttpServletResponse response) throws IOException {
         response.setContentType("image/png");
 
+        stataService.saveCmd("/graph");
         File f = stataService.graph();
 
         InputStream in = new FileInputStream(f);
@@ -77,20 +78,25 @@ public class HtmlController {
 
         String path = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        stataService.saveCmd(path);
         
         path = path.substring(7);
-        
+      
         stataService.run("graph display " + path);
         
-        File f = stataService.graph();
+        File f = stataService.graph( path );
 
         InputStream in = new FileInputStream(f);
         IOUtils.copy(in, response.getOutputStream());
     }
 
     @RequestMapping("/est")
-    public void est(HttpServletResponse response) throws IOException {
+    public void est(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
+
+        String path = (String) request.getAttribute(
+                HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        stataService.saveCmd(path);
 
         File f = stataService.est();
 
@@ -105,6 +111,7 @@ public class HtmlController {
         
         String path = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        stataService.saveCmd(path);
         
         path = path.substring(7, path.length()-1);
         
@@ -121,6 +128,7 @@ public class HtmlController {
         
         String path = (String) request.getAttribute(
                 HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
+        stataService.saveCmd(path);
         
         path = path.substring(6);
 

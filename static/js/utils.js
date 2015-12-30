@@ -83,3 +83,37 @@ function surroundSel( field, before, after ) {
 function urldecode(str) {
   return decodeURIComponent((str + '').replace(/\+/g, '%20'));
 }
+
+
+//select next item
+function selectListItem() {
+ 
+  if ( selectpos> -1 ) {
+    $("#sidebar").children().eq(selectpos).css("font-weight","normal");
+  }
+
+  selectpos++;
+  $("#sidebar").children().eq(selectpos).fadeOut().fadeIn('slow');
+  $("#sidebar").children().eq(selectpos).css("font-weight","bold");
+  
+}
+
+// unselect item 
+function unselectListItem() {
+
+  if ( selectpos> -1 ) {
+    $("#sidebar").children().eq(selectpos).css("font-weight","normal");
+  }
+  
+  selectpos = -1;
+  
+}
+
+//select a 
+function useListItem() {
+  if (selectpos>-1) {
+    $("#sidebar").children()[selectpos].click();
+    $("#sidebar").children().eq(selectpos).css("font-weight","normal");
+    selectpos = -1;
+  }
+}

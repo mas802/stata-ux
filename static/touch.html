@@ -18,18 +18,22 @@
           console.log( "key pressed: " + e.which );
 
           if (e.which == 13) {
+            unselectListItem();
+            
             $('#inptform').submit();
+            $('#cmdtxt').val('');
             e.preventDefault();
             
           } else if (e.which == 33) {
+            
             // page up
-            selectpos++;
-            $("#sidebar").children().eq(selectpos).fadeOut().fadeIn('slow');
-            $("#sidebar").children()[selectpos].click();
+            selectListItem();
+            
+            useListItem();
             e.preventDefault();
             
           } else if (e.which == 32 && selectpos>-1) {
-            $("#sidebar").children()[selectpos].click();
+            useListItem();
             e.preventDefault();
           }
           

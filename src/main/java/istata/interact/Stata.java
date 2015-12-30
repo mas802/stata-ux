@@ -317,6 +317,16 @@ public class Stata implements IStata {
      */
     @Override
     public File getGraph() {
+        return getGraph(null);
+    }
+    
+    /*
+     * (non-Javadoc)
+     * 
+     * @see mas.research.stata.IStata#getGraph()
+     */
+    @Override
+    public File getGraph(String name) {
 
         if (alivemarker.exists()) {
             try {
