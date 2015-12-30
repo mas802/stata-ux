@@ -44,12 +44,14 @@ $(document).ready(
                       {
                         url : "/results?from=" + (topPos - 10) + "&to="
                             + topPos
-                      }).then(function(data) {
+                      }).done(function(data) {
                     if (data.length > 0) {
                       up(data);
                     }
                     resup = false;
-                  });
+                  }).fail(function(data) {
+    					alert("error in request, maybe session has expired, use refresh to renew login " + data );
+  					});
                 }
               } else if ($("#resdiv").scrollTop() + $("#resdiv").height() > $("#resdiv")[0].scrollHeight
                   - smallDist) {
@@ -65,7 +67,9 @@ $(document).ready(
                       down(data);
                     }
                     resup = false;
-                  });
+                  }).fail(function(data) {
+					    alert("error in request, maybe session has expired, use refresh to renew login " + data );
+					  });
                 }
                 // $("#resdiv").animate({ scrollTop: $( "#resdiv"
                 // )[0].scrollHeight - ( $( "#resdiv" ).height() +
@@ -184,7 +188,7 @@ $(document).ready(
         resup = true;
         $.ajax({
           url : "/results?from=" + (bottomPos + 1)
-        }).then(
+        }).done(
             function(data) {
               if (data.length > 0) {
                 down(data);
@@ -195,7 +199,9 @@ $(document).ready(
                     }, "fast");
               }
               resup = false;
-            });
+            }).fail(function(data) {
+			    alert("error in request, maybe session has expired, use refresh to renew login " + data );
+			  });
       }
     }, 500);
 
@@ -204,7 +210,7 @@ $(document).ready(
      */
     $.ajax({
       url : "/results"
-    }).then(
+    }).done(
         function(data) {
           if (data.length > 0) {
             down(data);
@@ -214,7 +220,9 @@ $(document).ready(
                       - ($("#resdiv").height() + smallDist * 2)
                 }, "fast");
           }
-        });
+        }).fail(function(data) {
+		    alert("error in request, maybe session has expired, use refresh to renew login " + data );
+		  });
 
     updateSide();
 
@@ -267,7 +275,7 @@ function updateSide() {
   $.ajax({
     url : "/suggest",
     data : $("#inptform").serialize()
-  }).then(function(data) {
+  }).done(function(data) {
     if (data.length > 0) {
 
       unselectListItem();
@@ -277,6 +285,8 @@ function updateSide() {
         $("#sidebar").append(value.content);
       });
     }
+  }).fail(function(data) {
+    alert("error in request, maybe session has expired, use refresh to renew login " + data );
   });
   
 }

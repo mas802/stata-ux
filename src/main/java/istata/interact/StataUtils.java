@@ -35,7 +35,8 @@ import java.util.regex.Pattern;
  * 
  * @author Markus Schaffner
  * 
- */public class StataUtils {
+ */
+public class StataUtils {
 
     public static final char M0 = (char) 28; // text
     public static final char M1 = (char) 29; // input/com
@@ -81,6 +82,8 @@ import java.util.regex.Pattern;
 
             new String[] { "\\{search (.*?):(.*?)\\}", M1 + "$2" + M0 },
             new String[] { "\\{search (.*?)\\}", M1 + "$1" + M0 },
+
+            new String[] { "\\{browse (.*?):(.*?)\\}", M1 + "$2" + M0 },
 
             new String[] { "\\{cmd:(.*?)\\}", M4 + "$1" + M0 },
 
