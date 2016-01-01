@@ -531,8 +531,7 @@ public class StataService implements IStataListener {
      * @return graph file
      */
     public File graph() {
-        IStata stata = stataFactory.getInstance();
-        return stata.getGraph(null);
+        return graph("");
     }
 
 

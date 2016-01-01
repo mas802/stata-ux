@@ -317,7 +317,7 @@ public class Stata implements IStata {
      */
     @Override
     public File getGraph() {
-        return getGraph(null);
+        return getGraph("");
     }
     
     /*
@@ -337,6 +337,8 @@ public class Stata implements IStata {
                 // write command to pipe file
                 FileWriter fwm = new FileWriter(domarker);
                 fwm.append("graph");
+                fwm.append("\n");
+                fwm.append(name);
                 fwm.close();
 
                 Thread.sleep(10);
