@@ -1,0 +1,4 @@
+********************************************** stata.toc
+v 3
+d Interact testing
+p interact [run interact testing version for stata-us]
