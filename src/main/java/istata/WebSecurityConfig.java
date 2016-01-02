@@ -29,7 +29,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .anyRequest().authenticated().and().formLogin()
-                .loginPage("/login").permitAll().and().logout().permitAll();
+                .loginPage("/login").permitAll().and().logout().permitAll().and()
+                .exceptionHandling().authenticationEntryPoint(new AjaxAwareAuthenticationEntryPoint("/login"));
+;
 
         // FIXME, we might want to have this enabled at some point ar at least
         // for some resources
