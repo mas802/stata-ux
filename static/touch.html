@@ -1,9 +1,10 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
+  <title>stata-ux</title>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width initial-scale=1.0, maximum-scale=1.0, user-scalable=0"> 
-  <script src="/js/jquery.min.js"></script>
+  <script src="/webjars/jquery/2.1.4/dist/jquery.min.js" type="text/javascript"></script>
   <script src="/js/utils.js"></script>
   <script src="/js/touch.js"></script>
   <script>
@@ -41,19 +42,21 @@
       });
   </script>
   
+  <link href="/webjars/bootstrap/3.3.5/css/bootstrap.min.css"
+    rel="stylesheet" media="screen" />
   <link rel="stylesheet" href="/css/touch.css" type="text/css" media="screen" />
 </head>
 <body>
-    <div class="sbtop row scroll-y">
-        <div id="sidebar">
+    <div class="sbtop masrow scroll-y">
+        <div id="sidebar" class="list-group">
         </div>
      </div>
-    <div id="resdiv" class="resdiv row scroll-y">
+    <div id="resdiv" class="resdiv masrow scroll-y">
         <pre id="results">
         </pre>
      </div>
      <form id="inptform" action="javascript:void(0);" autocorrect="off" autocapitalize="off" autocomplete="off">
-       <div class="header row">
+       <div class="header masrow">
         <input id="cmdpre" type="text" name="pre" size="1" value="" class="grabtab" />
         <textarea id="cmdtxt" name="cmd"></textarea>
         <input id="cmdpost" type="text" name="post" size="1" value="" class="grabtab" />
@@ -63,16 +66,17 @@
        </div> 
        <div id="cmdbuttons">
         <span id="indicator">OK</span>
-        <input type="button" name="options" value=',' onclick='surroundSel( "#cmdtxt", ",", "");' />
-        <input type="button" name="brackets" value='()' onclick='surroundSel( "#cmdtxt", "(", ")");' />
-        <input type="button" name="quotes" value='"' onclick='surroundSel( "#cmdtxt", "\"", "\"");' />
-        <input type="button" name="localquotes" value="`'" onclick="surroundSel( '#cmdtxt', '`', '\'');" />
+        <input type="button" class="btn-primary" name="options" value=',' onclick='surroundSel( "#cmdtxt", ",", "");' />
+        <input type="button" class="btn-primary" name="brackets" value='()' onclick='surroundSel( "#cmdtxt", "(", ")");' />
+        <input type="button" class="btn-primary" name="quotes" value='"' onclick='surroundSel( "#cmdtxt", "\"", "\"");' />
+        <input type="button" class="btn-primary" name="localquotes" value="`'" onclick="surroundSel( '#cmdtxt', '`', '\'');" />
 
-        <a href="graph" target="_blank">gph</a>
-        <a href="est" target="_blank">est</a>
+        <a href="graph"  class="abtn btn btn-info" target="_blank" title="graph"><span class="glyphicon glyphicon-stats"></span></a>
+        <a href="est"    class="abtn btn btn-info" target="_blank" title="estimations"><span class="glyphicon glyphicon-align-justify"></span></a>
         
-        <input type="reset" name='reset' value='cl' autocorrect="off" autocapitalize="off" autocomplete="off" />
-        <input type="submit" name='submit' value='go' autocorrect="off" autocapitalize="off" autocomplete="off" />
+        <input type="reset"  class="btn-danger" name='reset' value='cl' autocorrect="off" autocapitalize="off" autocomplete="off" />
+        <input type="submit"  class="btn-success" name='submit' value='go' autocorrect="off" autocapitalize="off" autocomplete="off" />
         </div>
       </form>
 </body>
+</html>

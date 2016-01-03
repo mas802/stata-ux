@@ -1,4 +1,4 @@
-<div class='sidebaritem file' 
+<div class='list-group-item sidebaritem file' 
          onclick='handle("sidebarclick", "$text", $pos, $from, $to );''>
 $filename
 </div>

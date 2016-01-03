@@ -95,7 +95,7 @@ function selectListItem() {
   selectpos++;
   $("#sidebar").children().eq(selectpos).fadeOut().fadeIn('slow');
   $("#sidebar").children().eq(selectpos).css("font-weight","bold");
-  
+  $("#sidebar").children().eq(selectpos).get(0).scrollIntoView();
 }
 
 // unselect item 

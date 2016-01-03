@@ -44,24 +44,27 @@
 	font-style: italic;
 }
 
-input, textarea, button {
-	-webkit-appearance: none; /*Safari/Chrome*/
-	-moz-appearance: none; /*Firefox*/
-	-ms-appearance: none; /*IE*/
-	-o-appearance: none; /*Opera*/
+input, textarea, button, .abtn {
+	-webkit-appearance: none;
+	-moz-appearance: none; 
+	-ms-appearance: none; 
+	-o-appearance: none; 
 	appearance: none;
 	-webkit-border-radius: 5px;
-	border-radius: 5px;
+	border-radius: 5px; 
 }
 
-input, textarea, form {
+input, textarea, form, .abtn {
 	font-size: 16pt;
 	vertical-align: top;
 }
 
-input[type="button"], input[type="submit"], input[type="reset"] {
-	border: 1px solid #006;
-	backgroundx: #90c0f0;
+.abtn {
+	text-align: center;
+}
+	
+input[type="button"], input[type="submit"], input[type="reset"], .abtn {
+	border: 1px solid #006; 
 	width: 40px;
 	height: 40px;
 	margin: 9px;
@@ -72,17 +75,17 @@ body, html {
 	height: 100%;
 }
 
-.row, .col {
+.masrow, .mascol {
 	overflow: hidden;
 	position: absolute;
 }
 
-.row {
+.masrow {
 	left: 0;
 	right: 0;
 }
 
-.col {
+.mascol {
 	top: 0;
 	bottom: 0;
 }
@@ -96,56 +99,63 @@ body, html {
 	-webkit-overflow-scrolling: touch;
 }
 
-.header.row {
+.header.masrow {
 	bottom: 0;
 	right: 60px;
 	padding: 10px;
-	height: 60px;
+	height: 80px;
 	vertical-align: center;
 	background-color: #eaeaea;
 }
 
-.fullside.col {
+.fullside.mascol {
 	right: 0px;
 	left: 320px;
 	padding: 10px;
 	height: 100%;
 }
 
-.sbtop.col {
+.sbtop.mascol {
 	left: 0px;
 	padding: 10px;
 	width: 300px;
 	background-color: #eaffff;
 }
 
-.sbtop.row {
-	top: 00px;
+.sbtop.masrow {
+	top: 0px;
 	left: 0px;
 	bottom: 80px;
 	padding: 10px;
-	width: 300px;
-	background-color: #eaffff;
+	width: 320px;
+	background-color: #eaeaea;
 }
 
-.resdiv.row {
+.resdiv.masrow {
 	top: 0px;
 	bottom: 80px;
 	left: 320px;
 	right: 60px;
-	padding: 10px;
+	padding: 0px;
 }
 
 .sidebaritem {
+  /*
 	margin: 1px;
 	padding: 8px;
 	border: 1px solid #000000;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
+	*/
+  overflow: hidden;	
 }
 
 .full {
-	background-color: #ffffea;
+  background-color: #ffffea;
+}
+
+.file {
+  background-color: #eaeaff;
 }
 
 .varitem {
@@ -200,6 +210,7 @@ pre {
 	font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
 		DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 	font-size: 12pt;
+	background-color: #ffffff;
 }
 
 #cmdcontent {

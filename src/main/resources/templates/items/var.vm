@@ -1,4 +1,4 @@
-<div class='sidebaritem varitem' 
+<div class='list-group-item sidebaritem varitem' 
          onclick='handle("sidebarclick", "$repl", $focuspos, $from, $to );'>
 $var
 </div>
