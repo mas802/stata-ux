@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
-   STATA smcl formating substitutes
-*/
+
+/**
+ *  STATA smcl formating substitutes
+ */
 .st_txt {
 	color: Black;
 	font-weight: normal;
@@ -44,31 +45,23 @@
 	font-style: italic;
 }
 
-input, textarea, button, .abtn {
-	-webkit-appearance: none;
-	-moz-appearance: none; 
-	-ms-appearance: none; 
-	-o-appearance: none; 
-	appearance: none;
-	-webkit-border-radius: 5px;
-	border-radius: 5px; 
+/**
+ * square buttons
+ */
+
+.btn-sq {
+  font-size: 16pt;
+	text-align: center !important;
+  width: 40px !important;
+  height: 40px !important;
+  margin-bottom: 2px;
+  padding: 5px;
+  vertical-align: center;
 }
 
-input, textarea, form, .abtn {
-	font-size: 16pt;
-	vertical-align: top;
-}
-
-.abtn {
-	text-align: center;
-}
-	
-input[type="button"], input[type="submit"], input[type="reset"], .abtn {
-	border: 1px solid #006; 
-	width: 40px;
-	height: 40px;
-	margin: 9px;
-}
+/**
+ * general layout 
+ */
 
 body, html {
 	overflow: hidden;
@@ -139,14 +132,11 @@ body, html {
 	padding: 0px;
 }
 
+/**
+ * sidebar formating
+ */
+ 
 .sidebaritem {
-  /*
-	margin: 1px;
-	padding: 8px;
-	border: 1px solid #000000;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	*/
   overflow: hidden;	
 }
 
@@ -162,55 +152,80 @@ body, html {
 	background-color: #ffffff;
 }
 
-#indicator {
-	overflow: hidden;
-	display: block;
-	vertical-align: center;
-	width: 40px;
-	margin: 9px;
-	height: 40px;
+
+/**
+ * hidden textfields to grab next/prev or tab
+ */
+ 
+input.grabtab {
+  position: absolute;
+  background: transparent;
+  border: none;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  display: compact;
 }
 
-#cmdeditor {
-	overflow: hidden;
-	position: absolute;
-	top: 0px;
-	bottom: 0px;
-	left: 320px;
-	right: 60px;
-	padding: 0px;
-	margin: 0px;
-}
-
-#cmdbuttons {
-	overflow: hidden;
-	position: absolute;
-	top: 0px;
-	bottom: 0px;
-	right: 0px;
-	width: 60px;
-	height: 100%;
-	vertical-align: bottom;
-	padding: 0px;
-	margin: 0px;
-	text-align: center;
-	background-color: #eaeaea;
-}
-
-#cmdtxt {
-	width: 100%;
-	height: 3em;
-	border: 1px solid #999999;
-	font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
-		DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-	font-size: 12pt;
-}
-
+/**
+ * results pre
+ */
+ 
 pre {
 	font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
 		DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 	font-size: 12pt;
 	background-color: #ffffff;
+}
+
+/**
+ * named entities
+ */
+ 
+#indicator {
+  overflow: hidden;
+  display: block;
+  vertical-align: center;
+  width: 40px !important;
+  height: 40px !important;
+  margin: 9px;
+  background-color: #ffffea;
+}
+
+#cmdeditor {
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 320px;
+  right: 60px;
+  padding: 0px;
+  margin: 0px;
+}
+
+#cmdbuttons {
+  overflow: hidden;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 60px;
+  height: 100%;
+  vertical-align: bottom;
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+  background-color: #eaeaea;
+}
+
+#cmdtxt {
+  width: 100%;
+  height: 3em;
+  border: 1px solid #999999;
+  font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+  font-size: 12pt;
 }
 
 #cmdcontent {
@@ -224,6 +239,10 @@ pre {
 		DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 	font-size: 12pt;
 }
+
+/**
+ * formating to make ace work on ipad
+ */
 
 #aceeditor {
 	/*  overflow: hidden; */
@@ -249,13 +268,4 @@ pre {
 	font-size: 12pt;
 }
 
-input.grabtab {
-	position: absolute;
-	background: transparent;
-	border: none;
-	width: 1px;
-	height: 1px;
-	margin: 0;
-	padding: 0;
-	display: compact;
-}
+

@@ -29,15 +29,15 @@
         <input id="cmdcontent" type="hidden" name="content" value=""/>
         <input id="cmdpath" type="hidden" name="path" value="$title" />
         <span id="indicator">OK</span>
-        <input type="button" class="btn-primary" name="options" value=','      onclick='surroundSelAce( "#cmdcontent", ",", "");' />
-        <input type="button" class="btn-primary" name="options" value='/'      onclick='surroundSelAce( "#cmdcontent", "/", "");' />
-        <input type="button" class="btn-primary" name="brackets" value='()'    onclick='surroundSelAce( "#cmdcontent", "(", ")");' />
-        <input type="button" class="btn-primary" name="quotes" value='"'       onclick='surroundSelAce( "#cmdcontent", "\"", "\"");' />
-        <input type="button" class="btn-primary" name="localquotes" value="`'" onclick="surroundSelAce( '#cmdcontent', '`', '\'');" />
+        <input type="button" class="btn btn-sq btn-primary" name="options" value=','      onclick='surroundSelAce( "#cmdcontent", ",", "");' />
+        <input type="button" class="btn btn-sq btn-primary" name="options" value='/'      onclick='surroundSelAce( "#cmdcontent", "/", "");' />
+        <input type="button" class="btn btn-sq btn-primary" name="brackets" value='()'    onclick='surroundSelAce( "#cmdcontent", "(", ")");' />
+        <input type="button" class="btn btn-sq btn-primary" name="quotes" value='"'       onclick='surroundSelAce( "#cmdcontent", "\"", "\"");' />
+        <input type="button" class="btn btn-sq btn-primary" name="localquotes" value="`'" onclick="surroundSelAce( '#cmdcontent', '`', '\'');" />
         
-        <input type="button" class="btn-success" name="save" value="s"  onclick="saveFile(false);"/>
-        <input type="button" class="btn-success" name="saveAndRun" value="r"  onclick="saveFile(true);"/>
-        <input type="button" class="btn-success" name="runSel" value="d"  onclick="run();"/>
+        <input type="button" class="btn btn-sq btn-success" name="save" value="s"  onclick="saveFile(false);"/>
+        <input type="button" class="btn btn-sq btn-success" name="saveAndRun" value="r"  onclick="saveFile(true);"/>
+        <input type="button" class="btn btn-sq btn-success" name="runSel" value="d"  onclick="run();"/>
         </div>
       </form>
       
