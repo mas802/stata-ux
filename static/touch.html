@@ -47,7 +47,7 @@
   <link rel="stylesheet" href="/css/touch.css" type="text/css" media="screen" />
 </head>
 <body>
-    <div class="sbtop masrow scroll-y">
+    <div class="sidebardiv masrow scroll-y">
         <div id="sidebar" class="list-group">
         </div>
      </div>
@@ -56,7 +56,7 @@
         </pre>
      </div>
      <form id="inptform" action="javascript:void(0);" autocorrect="off" autocapitalize="off" autocomplete="off">
-       <div class="header masrow">
+       <div class="cmdlinediv masrow">
         <input id="cmdpre" type="text" name="pre" size="1" value="" class="grabtab" />
         <textarea id="cmdtxt" name="cmd"></textarea>
         <input id="cmdpost" type="text" name="post" size="1" value="" class="grabtab" />
@@ -64,7 +64,7 @@
         <input id="cmdfocus" type="hidden" name="focus" size="1" value="" />
         <input id="cmdpos" type="hidden" name="pos" size="1" value="" />
        </div> 
-       <div id="cmdbuttons">
+       <div id="cmdbuttons" class="cmdbuttondiv">
         <span id="indicator">OK</span>
         <input type="button" class="btn btn-sq btn-primary" name="options" value=',' onclick='surroundSel( "#cmdtxt", ",", "");' />
         <input type="button" class="btn btn-sq btn-primary" name="brackets" value='()' onclick='surroundSel( "#cmdtxt", "(", ")");' />

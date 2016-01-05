@@ -92,7 +92,7 @@ body, html {
 	-webkit-overflow-scrolling: touch;
 }
 
-.header.masrow {
+.cmdlinediv.masrow {
 	bottom: 0;
 	right: 60px;
 	padding: 10px;
@@ -101,21 +101,14 @@ body, html {
 	background-color: #eaeaea;
 }
 
-.fullside.mascol {
-	right: 0px;
-	left: 320px;
-	padding: 10px;
-	height: 100%;
-}
-
-.sbtop.mascol {
+.sidebardiv.mascol {
 	left: 0px;
 	padding: 10px;
 	width: 300px;
 	background-color: #eaffff;
 }
 
-.sbtop.masrow {
+.sidebardiv.masrow {
 	top: 0px;
 	left: 0px;
 	bottom: 80px;
@@ -212,6 +205,7 @@ pre {
   right: 0px;
   width: 60px;
   height: 100%;
+  display:table-cell;
   vertical-align: bottom;
   padding: 0px;
   margin: 0px;

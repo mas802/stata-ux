@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="/css/touch.css" type="text/css" media="screen" />
 </head>
 <body>
-    <div class="sbtop masrow scroll-y">
+    <div class="sidebardiv masrow scroll-y">
         <div id="sidebar" class="list-group">
         </div>
      </div>
