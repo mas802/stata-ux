@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.802</groupId>
-	<version>0.3.0-beta</version>
+	<version>0.4.0-beta.snapshot</version>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
