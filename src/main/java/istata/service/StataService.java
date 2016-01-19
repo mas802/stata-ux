@@ -419,6 +419,7 @@ public class StataService implements IStataListener {
     public StataDoFile loadDoFile(String path) {
         StataDoFile dofile = new StataDoFile();
 
+        // TODO this is probably now unnessesary
         String epath = expandPath(path);
 
         File file = new File(epath);
