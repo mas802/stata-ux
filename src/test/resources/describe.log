@@ -1,0 +1,52 @@
+
+Contains data from ../../dta/Annual.dta
+  obs:         2,421                          
+ vars:            23                          20 Jan 2016 01:48
+ size:       314,730                          (_dta has notes)
+-------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+-------------------------------------------------------------------------------
+id              float   %9.0g                 Anonymised AGS
+year            int     %10.0g                Financial Year
+annual_workam~t float   %9.0g                 Output (service request type)
+                                                (total work amount), annual
+                                                (Utility)
+annual_workun~d double  %10.0g                Work amount, annual (PatProd)
+annual_itemam~t float   %9.0g                 Output (service request type)
+                                                (total item amount), annual
+                                                (Utility)
+annual_itema~ge float   %9.0g                 Non-chargeable time (total item
+                                                amount), annual (Utility)
+annual_it~ltime float   %9.0g                 Performance - normal time only
+                                                (total item amount), annual
+                                                (Utility)
+annual_it~rtime float   %9.0g                 Overtime (total item amount),
+                                                annual (Utility)
+bonus           double  %10.0g                Bonus, annual
+rating          double  %8.0g      rating_PAT
+                                              Final Assessment Rating, annual
+                                                (PAT)
+annual_OT_hours float   %9.0g                 Overtime hours, annual (OT)
+annual_OT_amo~t float   %9.0g                 Overtime amount (payment), annual
+                                                (OT)
+annual_le~_days double  %9.0g                 Total leave taken in days, annual
+                                                (Leave)
+annual_le~Edays double  %9.0g                 Total leave taken in FTE days,
+                                                annual (Leave)
+supervisor_id   float   %9.0g                 Supervisor ID, anonymised
+mpeperfrecord~d double  %10.0g                MPEs, different measurement in
+                                                different years, refer to
+                                                Patents Production data
+daysinsec_Pat~d double  %10.0g                Days in Section, annual (PatProd)
+daysinsec_mle~d double  %10.0g                Days in Section minus paid +
+                                                unpaid leave, annual (PatProd)
+gender          float   %9.0g                 GENDER (FTE)
+age             float   %10.0g                AGE (FTE)
+fte             double  %10.0g                FTE (FTE)
+dcomm_n         float   %td                   DCOMM (FTE)
+losyears        double  %10.0g                LOS YEARS (FTE)
+-------------------------------------------------------------------------------
+Sorted by:  id  year
+MEMORY GRAPHS: 
+/home/schaffne/Dropbox/ProdIPAUS/do/Read

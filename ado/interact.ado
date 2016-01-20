@@ -156,13 +156,17 @@ capture noisily while ( _rc != 1 ) {
 	} 
 	else if ( "`command'" == "describe" ){
 		
-	    qui log using "`descfile'", replace text name(_interact_describe)
-	    describe
-		qui graph dir, memory
-		di "MEMORY GRAPHS: `r{list)'"
-	    pwd
-	    qui log close _interact_describe
+    local save_linesize = c(linesize)
+    set linesize 255
 		
+    qui log using "`descfile'", replace text name(_interact_describe)
+	  describe
+    qui graph dir, memory
+    di "MEMORY GRAPHS: `r{list)'"
+	  pwd
+	  qui log close _interact_describe
+		
+    set linesize `save_linesize'
 	}
 	else if ( "`command'" == "graph" ){
 		

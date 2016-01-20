@@ -277,6 +277,9 @@ public class Stata implements IStata {
                         int i = r.indexOf("Sorted by:");
                         r = r.substring(0, i);
 
+                        r = r.replaceAll("[\r|\n]+[ ]+>[ ]+", " ");
+                        r = r.replaceAll("[\r|\n]+[ ]+", " ");
+
                         // r = r.replaceAll("\n(\\s*?)> ", "");
                         // r = r.replaceAll("\n\\s(\\s*?)(\\S)", " $2");
                         // r = r.replaceAll("(\n\\S*?)[\n]", "$1");
@@ -319,7 +322,7 @@ public class Stata implements IStata {
     public File getGraph() {
         return getGraph("");
     }
-    
+
     /*
      * (non-Javadoc)
      * 
