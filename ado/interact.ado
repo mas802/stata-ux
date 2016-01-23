@@ -124,8 +124,8 @@ capture noisily while ( _rc != 1 ) {
 
 	sleep 10
 	
-    di as result "start `command' ..."
-    di ""
+  di as result "start `command' ..."
+  di ""
 	if ( "`command'" == "do" ) {
 	
 		qui log using "`logfile'", append `mode' name(_interact_do)
@@ -154,7 +154,7 @@ capture noisily while ( _rc != 1 ) {
 		erase "`dofile'"
 		
 	} 
-	else if ( "`command'" == "describe" ){
+	else if ( "`command'" == "describe" ) {
 		
     local save_linesize = c(linesize)
     set linesize 255
@@ -168,17 +168,17 @@ capture noisily while ( _rc != 1 ) {
 		
     set linesize `save_linesize'
 	}
-	else if ( "`command'" == "graph" ){
+	else if ( "`command'" == "graph" ) {
 		
-	    qui log using "`graphlogfile'", replace text name(_interact_graph)
-	    cap {
-			// TODO graph dir
-			noi graph export "`graphfile'", replace name(`option')
+    qui log using "`graphlogfile'", replace text name(_interact_graph)
+    cap {
+      // TODO graph dir
+      noi graph export "`graphfile'", replace name(`option')
 		}
-	    qui log close _interact_graph
+    qui log close _interact_graph
 		
 	}
-	else if ( "`command'" == "est" ){
+	else if ( "`command'" == "est" ) {
 		
 	    qui log using "`estlogfile'", replace text name(_interact_est)
 	    cap local est_scalars: e(scalars)
@@ -186,23 +186,29 @@ capture noisily while ( _rc != 1 ) {
 	    qui log close _interact_est
 		
 	}
-	else if ( "`command'" == "clear" ){
-		
-        clear
+  else if ( "`command'" == "clear" ){
+    
+    clear
 
-		capture erase "`dofile'"
+    capture erase "`dofile'"
         
-		qui log using "`logfile'", replace `mode' name(_interact_do)
-		qui log close _interact_do
+    qui log using "`logfile'", replace `mode' name(_interact_do)
+    qui log close _interact_do
 
-	    qui log using "`descfile'", replace text name(_interact_describe)
-	    qui log close _interact_describe
-		
-	    qui log using "`graphlogfile'", replace text name(_interact_graph)
-	    qui log close _interact_graph
-		
-	}
-    di as result "... finished `command' ..."
+    qui log using "`descfile'", replace text name(_interact_describe)
+    qui log close _interact_describe
+    
+    qui log using "`graphlogfile'", replace text name(_interact_graph)
+    qui log close _interact_graph
+    
+  }
+  else if ( "`command'" == "destroy" ) {
+    
+    di as result "... break interact ..."
+    error 1
+    
+  }
+  di as result "... finished `command' ..."
 	
 	erase "`domarker'"
 	
@@ -210,7 +216,7 @@ capture noisily while ( _rc != 1 ) {
 	file write marker "end "
 	file close marker
 
-    di as result "... " _continue
+  di as result "... " _continue
 
 }
 
@@ -220,6 +226,10 @@ _return drop interactReturnHold
 // clear the do file
 //
 capture erase "`dofile'"
+capture erase "`descfile'"
+capture erase "`estfile'"
+capture erase "`graphfile'"
+
 capture erase "`alivemarker'"
 capture erase "`domarker'"
 capture erase "`endmarker'"

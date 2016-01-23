@@ -1,7 +1,7 @@
-********************************************** statdoc.pkg
+********************************************** interact.pkg
 v 3
 d interact
-d Runs the interact file based Stata pipe for stata-ux
-d Distribution-Date: 20160101
-d Distribution-Time: 043000
+d Runs the interact file based Stata pipe for stata-ux v 0.4.0-beta.snapshot
+d Distribution-Date: 20160124
+d Distribution-Time: 210142
 f interact.ado

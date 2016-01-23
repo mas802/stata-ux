@@ -21,6 +21,7 @@ import istata.domain.EstBean;
 import istata.domain.StataDoFile;
 import istata.interact.IStata;
 import istata.interact.IStataListener;
+import istata.interact.StataBusyException;
 import istata.interact.StataFactory;
 import istata.interact.StataNotRunningException;
 import istata.interact.StataUtils;
@@ -54,6 +55,8 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,11 +65,17 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 @Service
 public class StataService implements IStataListener {
 
+    protected final Log logger = LogFactory.getLog(this.getClass());
+
     @Autowired
     private CmdRepository cmdRepository;
 
     @Autowired
     private StataFactory stataFactory;
+
+    public void setStataFactory(StataFactory stataFactory) {
+        this.stataFactory = stataFactory;
+    }
 
     @Autowired
     private VelocityEngine velocityEngine;
@@ -393,10 +402,19 @@ public class StataService implements IStataListener {
         } catch (StataNotRunningException e) {
             ContentLine srl = new ContentLine();
             srl.setLine(1);
-            srl.setContent("<div class='sidebaritem error' >"
+            srl.setContent("<div class='list-group-item sidebaritem error' >"
                     + "Stata not running, you can try to start "
                     + "an instance by clicking "
                     + "<a target='_blank' href='/start'>here</a>" + "</div>");
+            out.add(srl);
+        } catch (StataBusyException e1) {
+            ContentLine srl = new ContentLine();
+            srl.setLine(1);
+            srl.setContent("<div class='list-group-item sidebaritem error' >"
+                    + "Stata appears to by busy or not running, you can try to "
+                    + "start a new instance by clicking "
+                    + "<a target='_blank' href='/start'>here</a> " 
+                    + "or wait for the current job to complete</div>");
             out.add(srl);
         }
 
@@ -407,7 +425,7 @@ public class StataService implements IStataListener {
     /*
      * return all vars as beans
      */
-    public List<StataVar> vars(String command) {
+    public List<StataVar> vars(String command) throws StataBusyException {
         IStata stata = stataFactory.getInstance();
         List<StataVar> vars = stata.getVars(command, false);
         return vars;
@@ -572,7 +590,8 @@ public class StataService implements IStataListener {
         if (stataProcess != null) {
             stataProcess.destroy();
         }
-
+        logger.info("Start Stata");
+        
         String[] stataProgs = new String[] { "/Applications/Stata/" };
         File stataexe = StataUtils.resolveStataPath(stataProgs,
                 System.getProperty("os.name", "generic"));
@@ -585,8 +604,36 @@ public class StataService implements IStataListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        /*
+         * shutdown hook to get temp files and directory deleted
+         */
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+
+            @Override
+            public void run() {
+                logger.info("Shutdown Hook Stata");
+                // TODO disable this for now destroyStata();
+            }
+        });
     }
 
+    
+    /**
+     * start a stata program instance (under development)
+     */
+    public void destroyStata() {
+        logger.info("Destroy Stata");
+        
+        try {
+            IStata stata = stataFactory.getInstance();
+            stata.destroy();
+        } catch (RuntimeException ex) {
+            logger.warn("Destroy Stata failed", ex);
+            ex.printStackTrace();
+        }
+    }
+    
     /**
      * transform a list of estimation properties into a realised list
      * 

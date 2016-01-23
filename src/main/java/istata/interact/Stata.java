@@ -222,7 +222,7 @@ public class Stata implements IStata {
      * @see mas.research.stata.IStata#getVars(java.lang.String)
      */
     @Override
-    public List<StataVar> getVars(String string, boolean force) {
+    public List<StataVar> getVars(String string, boolean force) throws StataBusyException {
 
         if (string != null && string.length() > 0) {
             throw new IllegalArgumentException("filter not implemented yet");
@@ -232,8 +232,13 @@ public class Stata implements IStata {
 
             if (alivemarker.exists()) {
                 try {
+                    int counter = 0;
                     while (domarker.exists() || endmarker.exists()) {
                         Thread.sleep(100);
+                        counter++;
+                        if ( counter>10 ) {
+                            throw new StataBusyException();
+                        }
                     }
 
                     // write command to pipe file
@@ -444,6 +449,8 @@ public class Stata implements IStata {
      */
     @Override
     public boolean isReady() {
+        
+        
         return true;
     }
 
@@ -453,6 +460,36 @@ public class Stata implements IStata {
 
     @Override
     public void destroy() {
+        if (alivemarker.exists()) {
+            try {
+                while (domarker.exists() || endmarker.exists()) {
+                    Thread.sleep(100);
+                }
+
+                // write command to pipe file
+                FileWriter fwm = new FileWriter(domarker);
+                fwm.append("destroy");
+                fwm.close();
+
+                Thread.sleep(10);
+
+                // wait until the dofile is cleared by stata
+                // and logfile is written
+                while (domarker.exists() || alivemarker.exists()) {
+                    Thread.sleep(100);
+                }
+
+             } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
         init = false;
     }
 
@@ -508,7 +545,13 @@ public class Stata implements IStata {
     @Override
     public String getWorkingdir() {
         if (vars == null) {
-            getVars("", true);
+            try {
+                getVars("", true);
+            } catch (StataBusyException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return null;
+            }
         }
         return workingdir;
     }

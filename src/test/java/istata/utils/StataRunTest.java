@@ -17,6 +17,7 @@ package istata.utils;
 
 import istata.interact.IStata;
 import istata.interact.IStataListener;
+import istata.interact.StataBusyException;
 import istata.interact.StataFactory;
 import istata.interact.StataNotRunningException;
 import istata.interact.model.StataResult;
@@ -60,7 +61,7 @@ public class StataRunTest {
     }
 
     @Test
-    public void testWorkingdir() {
+    public void testWorkingdir() throws StataBusyException {
 
         // final long start = System.currentTimeMillis();
 

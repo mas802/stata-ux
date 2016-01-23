@@ -18,6 +18,7 @@ package istata.general;
 import istata.domain.CmdRepository;
 import istata.domain.ContentLine;
 import istata.interact.IStata;
+import istata.interact.StataBusyException;
 import istata.interact.StataFactory;
 import istata.interact.model.StataVar;
 import istata.service.StataService;
@@ -54,7 +55,7 @@ public class SuggestTest {
     private VelocityEngine velocityEngine;
 
     @Test
-    public void someTest() {
+    public void someTest() throws StataBusyException {
         // Mockito.stubVoid(stataFactory.addStataListener(service));
 
         String[] cmd = { "reg this", "rag that", "sum me", "sum me" };
@@ -87,7 +88,7 @@ public class SuggestTest {
     }
 
     @Test
-    public void removeDuplicatesTest() {
+    public void removeDuplicatesTest() throws StataBusyException {
         // Mockito.stubVoid(stataFactory.addStataListener(service));
 
         String[] cmd = { "reg this", "rag that", "sum me", "sum me" };
@@ -120,7 +121,7 @@ public class SuggestTest {
     }
 
     @Test
-    public void filesTest() {
+    public void filesTest() throws StataBusyException {
         // Mockito.stubVoid(stataFactory.addStataListener(service));
 
         List<ContentLine> cmds = new ArrayList<ContentLine>();
@@ -146,7 +147,7 @@ public class SuggestTest {
     }
 
     @Test
-    public void filesTestAbs() {
+    public void filesTestAbs() throws StataBusyException {
         // Mockito.stubVoid(stataFactory.addStataListener(service));
 
         List<ContentLine> cmds = new ArrayList<ContentLine>();
@@ -173,7 +174,7 @@ public class SuggestTest {
     
 
     @Test
-    public void filesTestTilde() {
+    public void filesTestTilde() throws StataBusyException {
         // Mockito.stubVoid(stataFactory.addStataListener(service));
 
         List<ContentLine> cmds = new ArrayList<ContentLine>();

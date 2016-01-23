@@ -30,7 +30,7 @@ public interface IStata {
      * get varlist, returns null if the var list has not changed since the last
      * call, unless force is true.
      */
-    public abstract List<StataVar> getVars(String string, boolean force);
+    public abstract List<StataVar> getVars(String string, boolean force) throws StataBusyException;
 
     /*
      * get latest graph file, returns null if no graph can be produced

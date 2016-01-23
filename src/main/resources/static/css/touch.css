@@ -145,6 +145,9 @@ body, html {
 	background-color: #ffffff;
 }
 
+.error {
+  background-color: #ffeaea;
+}
 
 /**
  * hidden textfields to grab next/prev or tab
