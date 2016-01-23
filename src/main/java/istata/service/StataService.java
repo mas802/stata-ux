@@ -54,6 +54,8 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.CharUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,11 +64,17 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 @Service
 public class StataService implements IStataListener {
 
+    protected final Log logger = LogFactory.getLog(this.getClass());
+
     @Autowired
     private CmdRepository cmdRepository;
 
     @Autowired
     private StataFactory stataFactory;
+
+    public void setStataFactory(StataFactory stataFactory) {
+        this.stataFactory = stataFactory;
+    }
 
     @Autowired
     private VelocityEngine velocityEngine;
@@ -572,7 +580,8 @@ public class StataService implements IStataListener {
         if (stataProcess != null) {
             stataProcess.destroy();
         }
-
+        logger.info("Start Stata");
+        
         String[] stataProgs = new String[] { "/Applications/Stata/" };
         File stataexe = StataUtils.resolveStataPath(stataProgs,
                 System.getProperty("os.name", "generic"));
@@ -585,8 +594,36 @@ public class StataService implements IStataListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        /*
+         * shutdown hook to get temp files and directory deleted
+         */
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+
+            @Override
+            public void run() {
+                logger.info("Shutdown Hook Stata");
+                destroyStata();
+            }
+        });
     }
 
+    
+    /**
+     * start a stata program instance (under development)
+     */
+    public void destroyStata() {
+        logger.info("Destroy Stata");
+        
+        try {
+            IStata stata = stataFactory.getInstance();
+            stata.destroy();
+        } catch (RuntimeException ex) {
+            logger.warn("Destroy Stata failed", ex);
+            ex.printStackTrace();
+        }
+    }
+    
     /**
      * transform a list of estimation properties into a realised list
      * 
