@@ -616,6 +616,7 @@ public class StataService implements IStataListener {
                 // TODO disable this for now destroyStata();
             }
         });
+        
     }
 
     
