@@ -141,7 +141,6 @@ public class ScmlTest {
         String r = null;
         for (int i = 0; i < 1; i++) {
             String s = "Iteration 1:{space 3}log likelihood = {res:-335.50678}";
-
             r = StataUtils.smcl2plain(s, false);
         }
         System.out.println(r.length() + " - \n\n" + r);
