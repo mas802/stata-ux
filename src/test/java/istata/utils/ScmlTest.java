@@ -131,5 +131,24 @@ public class ScmlTest {
         assertEquals(20, r.length());
 
     }
+    
+    // Iteration 1:{space 3}log likelihood = {res:-335.50678}  
+    @Test
+    public void testRes() {
 
+        final long start = System.currentTimeMillis();
+
+        String r = null;
+        for (int i = 0; i < 1; i++) {
+            String s = "Iteration 1:{space 3}log likelihood = {res:-335.50678}";
+
+            r = StataUtils.smcl2html(s, false);
+        }
+        System.out.println(r.length() + " - \n\n" + r);
+
+        System.out.println(System.currentTimeMillis() - start);
+
+        assertEquals(20, r.length());
+
+    }
 }
