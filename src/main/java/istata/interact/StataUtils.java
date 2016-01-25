@@ -68,11 +68,11 @@ public class StataUtils {
             new String[] { "\\{res(ult)?\\}", "" + M0 + M3 },
             new String[] { "\\{err(or)?\\}", "" + M0 + M2 },
 
-            new String[] { "\\{inp(ut)?:(.*?)\\}", M1 + "$1" + M0 },
+            new String[] { "\\{inp(ut)?:(.*?)\\}", M1 + "$2" + M0 },
             new String[] { "\\{t[e]?xt:(.*?)\\}", M0 + "$1" + M0 },
             new String[] { "\\{t[e]?xt(.*?)\\}", M0 + "$1" + M0 },
-            new String[] { "\\{res(ult)?:(.*?)\\}", M3 + "$1" + M0 },
-            new String[] { "\\{err(or)?:(.*?)\\}", M2 + "$1" + M0 },
+            new String[] { "\\{res(ult)?:(.*?)\\}", M3 + "$2" + M0 },
+            new String[] { "\\{err(or)?:(.*?)\\}", M2 + "$2" + M0 },
 
             new String[] { "\\{hilite:(.*?)\\}", M4 + "$1" + M0 },
 
