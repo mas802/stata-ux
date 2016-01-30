@@ -110,7 +110,8 @@ public class HtmlController {
 
     @RequestMapping(value = { "/edit \"**", "/edit \"**/**" })
     @ResponseBody
-    public String edit(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model)
+    public String edit(HttpServletRequest request,
+            HttpServletResponse response, Map<String, Object> model)
             throws IOException {
 
         String path = (String) request
@@ -133,8 +134,8 @@ public class HtmlController {
             dofile = Paths.get(path).toAbsolutePath();
 
             if (dofile.toFile().exists()) {
-                response.sendRedirect("/edit \"" + dofile.toAbsolutePath().toString()
-                        + "\"");
+                response.sendRedirect("/edit \""
+                        + dofile.toAbsolutePath().toString() + "\"");
                 return null;
             } else {
                 // TODO maybe this can be done more graceful

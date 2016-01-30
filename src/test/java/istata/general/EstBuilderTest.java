@@ -42,11 +42,12 @@ public class EstBuilderTest {
         EstBean e4 = new EstBean();
         e4.setCommand("<i>");
 
-        List<EstBean> result = service.realiseEstDo(Arrays.asList(e1,e2,e3,e4));
+        List<EstBean> result = service.realiseEstDo(Arrays.asList(e1, e2, e3,
+                e4));
 
-        for ( EstBean e: result ) {
-            System.out.println( e.getCommand() );
-    
+        for (EstBean e : result) {
+            System.out.println(e.getCommand());
+
         }
     }
 }

@@ -15,19 +15,13 @@
  */
 package istata.utils;
 
+import istata.interact.model.StataVar;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-
-import istata.interact.IStata;
-import istata.interact.IStataListener;
-import istata.interact.StataFactory;
-import istata.interact.StataNotRunningException;
-import istata.interact.model.StataResult;
-import istata.interact.model.StataVar;
 
 import org.junit.Test;
 
@@ -54,12 +48,10 @@ public class StataVarTest {
         int i = r.indexOf("Sorted by:");
         r = r.substring(0, i);
 
-        r = r.replaceAll(
-                "[\r|\n]+[ ]+",
-                " ");
+        r = r.replaceAll("[\r|\n]+[ ]+", " ");
 
         System.out.println(r);
-        
+
         // r = r.replaceAll("\n(\\s*?)> ", "");
         // r = r.replaceAll("\n\\s(\\s*?)(\\S)", " $2");
         // r = r.replaceAll("(\n\\S*?)[\n]", "$1");
@@ -71,7 +63,7 @@ public class StataVarTest {
                 // System.out.println( new StataVar(l) );
             }
         }
-        
+
         // TODO there is no actual test here (?)
 
     }

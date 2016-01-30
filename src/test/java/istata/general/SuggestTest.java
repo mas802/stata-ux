@@ -171,7 +171,6 @@ public class SuggestTest {
 
         Assert.assertEquals(1, list.size());
     }
-    
 
     @Test
     public void filesTestTilde() throws StataBusyException {

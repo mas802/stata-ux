@@ -222,7 +222,8 @@ public class Stata implements IStata {
      * @see mas.research.stata.IStata#getVars(java.lang.String)
      */
     @Override
-    public List<StataVar> getVars(String string, boolean force) throws StataBusyException {
+    public List<StataVar> getVars(String string, boolean force)
+            throws StataBusyException {
 
         if (string != null && string.length() > 0) {
             throw new IllegalArgumentException("filter not implemented yet");
@@ -236,7 +237,7 @@ public class Stata implements IStata {
                     while (domarker.exists() || endmarker.exists()) {
                         Thread.sleep(100);
                         counter++;
-                        if ( counter>10 ) {
+                        if (counter > 10) {
                             throw new StataBusyException();
                         }
                     }
@@ -449,8 +450,7 @@ public class Stata implements IStata {
      */
     @Override
     public boolean isReady() {
-        
-        
+
         return true;
     }
 
@@ -479,7 +479,7 @@ public class Stata implements IStata {
                     Thread.sleep(100);
                 }
 
-             } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InterruptedException e) {

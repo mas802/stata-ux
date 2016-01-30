@@ -15,7 +15,6 @@
  */
 package istata.general;
 
-import istata.interact.IStata;
 import istata.interact.StataFactory;
 import istata.service.StataService;
 
@@ -28,19 +27,19 @@ public class StataRunTest {
 
         StataService service = new StataService();
         service.setStataFactory(new StataFactory());
-        
+
         service.startStata();
-        
+
         /*
          * ok, this is not easy to test
          */
-        
+
         // while (true) {
-            
-            Thread.sleep(1000);
-            
+
+        Thread.sleep(1000);
+
         // }
-            
+
         service.destroyStata();
     }
 }

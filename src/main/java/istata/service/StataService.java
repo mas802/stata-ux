@@ -30,7 +30,6 @@ import istata.interact.model.StataVar;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -46,7 +45,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -112,7 +110,6 @@ public class StataService implements IStataListener {
         return new ContentLine(1, "ran " + command);
     }
 
-
     /*
      * save command without running it
      */
@@ -123,6 +120,7 @@ public class StataService implements IStataListener {
 
         return new ContentLine(1, "ran " + command);
     }
+
     /*
      * get the complete results as a html page
      * 
@@ -413,7 +411,7 @@ public class StataService implements IStataListener {
             srl.setContent("<div class='list-group-item sidebaritem error' >"
                     + "Stata appears to by busy or not running, you can try to "
                     + "start a new instance by clicking "
-                    + "<a target='_blank' href='/start'>here</a> " 
+                    + "<a target='_blank' href='/start'>here</a> "
                     + "or wait for the current job to complete</div>");
             out.add(srl);
         }
@@ -450,7 +448,8 @@ public class StataService implements IStataListener {
         } catch (IOException e) {
             e.printStackTrace();
             // FIXME this should somehow fail, maybe runtime exception instead?
-            dofile.setContent("Error retrieving file content: " + e.getMessage());
+            dofile.setContent("Error retrieving file content: "
+                    + e.getMessage());
         }
 
         return dofile;
@@ -553,7 +552,6 @@ public class StataService implements IStataListener {
         return graph("");
     }
 
-
     /**
      * method to get a graph file with a name
      * 
@@ -563,8 +561,7 @@ public class StataService implements IStataListener {
         IStata stata = stataFactory.getInstance();
         return stata.getGraph(name);
     }
-    
-    
+
     /**
      * method to get a estimation results file
      * 
@@ -591,7 +588,7 @@ public class StataService implements IStataListener {
             stataProcess.destroy();
         }
         logger.info("Start Stata");
-        
+
         String[] stataProgs = new String[] { "/Applications/Stata/" };
         File stataexe = StataUtils.resolveStataPath(stataProgs,
                 System.getProperty("os.name", "generic"));
@@ -604,7 +601,7 @@ public class StataService implements IStataListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         /*
          * shutdown hook to get temp files and directory deleted
          */
@@ -616,16 +613,15 @@ public class StataService implements IStataListener {
                 // TODO disable this for now destroyStata();
             }
         });
-        
+
     }
 
-    
     /**
      * start a stata program instance (under development)
      */
     public void destroyStata() {
         logger.info("Destroy Stata");
-        
+
         try {
             IStata stata = stataFactory.getInstance();
             stata.destroy();
@@ -634,7 +630,7 @@ public class StataService implements IStataListener {
             ex.printStackTrace();
         }
     }
-    
+
     /**
      * transform a list of estimation properties into a realised list
      * 

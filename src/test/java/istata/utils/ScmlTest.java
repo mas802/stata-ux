@@ -131,8 +131,8 @@ public class ScmlTest {
         assertEquals(20, r.length());
 
     }
-    
-    // Iteration 1:{space 3}log likelihood = {res:-335.50678}  
+
+    // Iteration 1:{space 3}log likelihood = {res:-335.50678}
     @Test
     public void testRes() {
 
