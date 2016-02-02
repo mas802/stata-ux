@@ -2,6 +2,6 @@
 v 3
 d interact
 d Runs the interact file based Stata pipe for stata-ux v 0.4.0-beta.snapshot
-d Distribution-Date: 20160124
-d Distribution-Time: 210142
+d Distribution-Date: 20160202
+d Distribution-Time: 092307
 f interact.ado
