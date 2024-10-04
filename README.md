@@ -4,6 +4,8 @@ A spring boot interface to the Stata statistics software
 This is a proof-of-concept at the moment, adding a more touch friendly 
 interface to Stata.
 
+(!) currently pom.xml is disabled due to security issues, proceed with caution
+
 ## Run
 
 The released jar file is a self contained spring:boot application. For full 
